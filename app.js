@@ -15,8 +15,6 @@ var app = express();
 
 process.env.PORT = config.port;
 
-mongoose.connect(config.mongo);
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(express.static(__dirname + '/public'));

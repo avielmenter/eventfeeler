@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html ng-app="events">
+    <head>
+        <meta charset="utf-8" />
+        <title>Events</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+        <script src="events.js"></script>
+        <link rel="stylesheet" type="text/css" href="/styles/events.css" />
+    </head>
+    <body ng-controller="mainController">
+        <ul ng-repeat="event in events">
+            <li><b>Name:</b> {{event.name}}</li>
+            <li><b>Latitude:</b> {{event.lat}}</li>
+            <li><b>Longitude:</b> {{event.long}}</li>
+            <li><b>Categories:</b>
+                <ul>
+                    <li ng-repeat="cat in event.categories">{{cat}}</li>
+                </ul>
+            </li>
+        </ul>
+    </body>
+</html>

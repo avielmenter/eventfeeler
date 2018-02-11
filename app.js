@@ -13,6 +13,8 @@ var api = require('./routes/api');
 
 var app = express();
 
+process.env.PORT = config.port;
+
 mongoose.connect(config.mongo);
 
 // uncomment after placing your favicon in /public

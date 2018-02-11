@@ -2,6 +2,8 @@
 
 var config = {};
 
+config.port = 3000
+
 config.dbServer = "localhost:27017";
 config.dbSchema = "eventfeeler";
 config.dbUser = "";

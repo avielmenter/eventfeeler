@@ -3,11 +3,13 @@ var config = require('../config');
 
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/events', function(req, res, next) {
-    var events_api = require('../api/events')(config);
+var api = require('../data/api')(config);
+api.connect();
 
-    events_api.getEvents(function(events){
+router.get('/events', function(req, res, next) {
+    var getEvents = require('../api/events')(api);
+
+    getEvents(function(events){
         if (events != null)
             res.json(events);
     });

@@ -1,17 +1,11 @@
-module.exports = function(config)
+module.exports = function(api)
 {
-    var mongoose = require('mongoose');
-    mongoose.connect(config.mongo);
-
-    var schemas = require('./schemas');
-
-    api = {};
-    api.getEvents = function(callback)
+    var get = function(callback)
     {
-        schemas.Events.find(function(err, events) {
+        api.schemas.Events.find(function(err, events) {
             callback(events);
         });
     }
 
-    return api;
+    return get;
 }

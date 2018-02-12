@@ -1,6 +1,6 @@
 var config = {};
 
-config.port = process.env.EVENTFEELER_PORT;
+config.port = process.env.EVENTFEELER_PORT || process.env.PORT;
 
 config.dbServer = process.env.EVENTFEELER_DB_SERVER;
 config.dbSchema = process.env.EVENTFEELER_DB_SCHEMA;

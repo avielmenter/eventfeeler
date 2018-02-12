@@ -1,11 +1,16 @@
 module.exports = function(api)
 {
-    var get = function(callback)
-    {
-        api.schemas.Events.find(function(err, events) {
-            callback(events);
-        });
-    }
+    var mod = {};
 
-    return get;
+    mod.get = new Promise((resolve, reject) => {
+        api.connect();
+        api.schemas.Events.find(function(err, events) {
+            if (err != null)
+                reject(err);
+            else
+                resolve(events);
+        });
+    });
+
+    return mod;
 }

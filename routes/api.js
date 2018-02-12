@@ -4,14 +4,16 @@ var config = require('../config');
 var router = express.Router();
 
 var api = require('../data/api')(config);
-api.connect();
 
 router.get('/events', function(req, res, next) {
-    var getEvents = require('../api/events')(api);
+    var eventsAPI = require('../api/events')(api);
 
-    getEvents(function(events){
-        if (events != null)
-            res.json(events);
+    eventsAPI.get
+    .then(events => {
+        res.json(events);
+    })
+    .catch(err => {
+        res.json(err);
     });
 });
 

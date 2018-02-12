@@ -11,8 +11,15 @@
     <body ng-controller="mainController">
         <ul ng-repeat="event in events">
             <li><b>Name:</b> {{event.name}}</li>
-            <li><b>Latitude:</b> {{event.lat}}</li>
-            <li><b>Longitude:</b> {{event.long}}</li>
+            <li><b>Place:</b> {{event.place.name}}</li>
+            <li><b>Starts At:</b> {{event.start_time}}</li>
+            <li><b>Ends At:</b> {{event.end_time}}</li>
+            <li><b>Location:</b>
+                <ul>
+                    <li><b>Latitude:</b> {{event.place.location.latitude}}</li>
+                    <li><b>Longitude:</b> {{event.place.location.longitude}}</li>
+                </ul>
+            </li>
             <li><b>Categories:</b>
                 <ul>
                     <li ng-repeat="cat in event.categories">{{cat}}</li>

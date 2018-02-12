@@ -10,6 +10,7 @@ var expressLess = require('express-less');
 var config = require('./config');
 
 var api = require('./routes/api');
+var data = require('./routes/data');
 
 var app = express();
 
@@ -18,17 +19,17 @@ process.env.PORT = config.port;
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(express.static(__dirname + '/public'));
-app.use('/styles', expressLess(__dirname + '/less'));
+app.use('/styles', expressLess(__dirname + '/public/styles'));
+
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
 //app.use(cookieParser());
-//app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use('/', index);
 app.use('/api', api);
+app.use('/data', data);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -46,10 +47,12 @@ app.use(function(err, req, res, next) {
     // render the error page
     res.status(err.status || 500);
 
+    console.error(err);
+
     if (err.status == 404)
         res.sendFile(__dirname + '/public/404.html');
     else
-        res.render('error');
+        res.sendFile(__dirname + '/public/500.html');
 });
 
 module.exports = app;

@@ -27,7 +27,7 @@ To run this application, you must first configure certain environment variables 
 - `EVENTFEELER_FB_APP_SECRET`: An application secret for the Facebook Graph API.
 
 # Run
-To run EventFeeler, navigate to the event feeler folder, and start the application using the command `npm start`.
+To run EventFeeler, navigate to the `eventfeeler` folder, and start the application using the command `npm start`.
 
 # Collaborators
 Mohammad Bouzari
@@ -37,3 +37,6 @@ Chloe Bui
 Aviel Menter
 
 Cindy Tran
+
+# License
+This repository is licensed under the [GNU General Public License v3.0](https://github.com/avielmenter/eventfeeler/blob/master/LICENSE).

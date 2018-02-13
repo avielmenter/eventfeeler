@@ -9,28 +9,31 @@ class fbEvents
     constructor(setAPI)
     {
         this.api = setAPI;
+        this.lat = 33.6459816;      // coordinates for the center of Aldritch park
+        this.long = -117.8427147;
+        this.distance = 1000;
     }
 
-    getURL(params)
+    getURL()
     {
-        if (params.lat == null || params.long == null || this.api.FB_ACCESS_TOKEN == null)
+        if (this.lat == null || this.long == null || this.api.FB_ACCESS_TOKEN == null)
             return null;
 
-        var url = this.api.FB_GRAPH + "type=place&center=" + params.lat + "," + params.long;
+        var url = this.api.FB_GRAPH + "type=place&center=" + this.lat + "," + this.long;
 
-        if (params.distance !== undefined)
-            url += "&" + params.distance;
+        if (this.distance !== undefined)
+            url += "&" + this.distance;
 
-        url += "&fields=name,events.order(" + (params.sort_descending ? "reverse_" : "") + "chronological)"
+        url += "&fields=name,events.order(" + (this.sort_descending ? "reverse_" : "") + "chronological)"
 
-        if (params.since !== undefined)
-            url += ".since(" + Date.parse(params.since) / 1000 + ")";
-        if (params.until !== undefined)
-            url += ".until(" + Date.parse(params.until) / 1000 + ")";
-        if (params.eventLimit !== undefined)
-            url += ".limit(" + params.eventLimit + ")"; /*/
-        if (params.limit !== undefined)
-            url += "&limit=" + params.limit;//*/
+        if (this.since !== undefined)
+            url += ".since(" + Date.parse(this.since) / 1000 + ")";
+        if (this.until !== undefined)
+            url += ".until(" + Date.parse(this.until) / 1000 + ")";
+        if (this.eventLimit !== undefined)
+            url += ".limit(" + this.eventLimit + ")";
+        if (this.limit !== undefined)
+            url += "&limit=" + this.limit;
 
         console.log("Search for FB events: " + url);
 
@@ -38,52 +41,38 @@ class fbEvents
         return url;
     }
 
-    get(params){ return new Promise((resolve, reject) => {
-        var url = this.getURL(params);
+    async get() {
+        var url = this.getURL();
 
-        axios.get(
-            url
-        ).then(async function(response) {
-            if (response.data === undefined)
-                throw Error("No response.");
+        var response = await axios.get(url);
+        if (response.data === undefined)
+            throw Error("No response.");
 
-            var placeData = response.data;
-            var events = [];
+        var placeData = response.data;
+        var events = [];
 
-            while (placeData !== undefined && placeData !== null) { // for each place page
-                for (let place of placeData.data) { // for each place
-                    if (params.limit !== undefined && events.length >= params.limit)
-                        break;
+        while (placeData !== undefined && placeData !== null) { // for each place page
+            for (let place of placeData.data) { // for each place
+                var placeEvents = place.events;
 
-                    var placeEvents = place.events;
-
-                    while(placeEvents !== undefined && placeEvents !== null) { // for each event page
-                        for (let e of placeEvents.data) { // for each event
-                            events[events.length] = e;
-                            if (params.limit !== undefined && events.length >= params.limit)
-                                break;
-                        }
-
-                        if (params.limit !== undefined && events.length >= params.limit)
-                            break;
-
-                        placeEvents = await fbPaging.next(placeEvents);
+                while(placeEvents !== undefined && placeEvents !== null) { // for each event page
+                    for (let e of placeEvents.data) { // for each event
+                        events[events.length] = e;
+                        if (this.limit !== undefined && events.length >= this.limit)
+                            return events;
                     }
+                    
+                    placeEvents = await fbPaging.next(placeEvents);
                 }
-
-                if (params.limit !== undefined && events.length >= params.limit)
-                    break;
-
-                placeData = await fbPaging.next(placeData);
             }
 
-            resolve(events);
-        }).catch(error => {
-            reject(error);
-        });
-    });}
+            placeData = await fbPaging.next(placeData);
+        }
 
-    save(events){ return new Promise((resolve, reject) => {
+        return events;
+    }
+
+    async save(events) {
         this.api.connect();
         var inserts = Array();
 
@@ -91,7 +80,9 @@ class fbEvents
             var schemaEvent = schemas.eventFromFacebook(e);
 
             inserts[inserts.length] = new Promise((res, rej) => {
-                schemas.Events.findOneAndUpdate(
+                var eventModel = this.api.mongoose.model('events', schemas.Events);
+
+                eventModel.findOneAndUpdate(
                     { 'event_id' : schemaEvent.event_id },
                     schemaEvent,
                     { 'upsert': true },
@@ -112,7 +103,7 @@ class fbEvents
         .catch((err) => {
             reject(err);
         });
-    });}
+    }
 }
 
 module.exports = api => new fbEvents(api);

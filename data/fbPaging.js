@@ -10,8 +10,6 @@ fbPaging.next = obj => {
             return;
         }
 
-        console.log("Getting next page: " + obj.paging.next);
-
         axios.get(
             obj.paging.next
         ).then(o => {

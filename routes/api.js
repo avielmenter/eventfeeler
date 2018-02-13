@@ -6,14 +6,16 @@ var router = express.Router();
 var api = require('../data/api')(config);
 
 router.get('/events', function(req, res, next) {
-    var eventsAPI = require('../api/events')(api);
+    var eventsAPI = require('../api/events')(api, req.query);
 
-    eventsAPI.get
+    eventsAPI.get()
     .then(events => {
         res.json(events);
     })
     .catch(err => {
-        res.json(err);
+        console.log(err);
+        res.status(500);
+        res.send("ERROR");
     });
 });
 

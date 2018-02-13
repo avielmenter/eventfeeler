@@ -10,7 +10,6 @@ var expressLess = require('express-less');
 var config = require('./config');
 
 var api = require('./routes/api');
-var data = require('./routes/data');
 
 var app = express();
 
@@ -29,7 +28,6 @@ app.use(methodOverride());
 //app.use(cookieParser());
 
 app.use('/api', api);
-app.use('/data', data);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

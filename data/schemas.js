@@ -2,7 +2,12 @@ var mongoose = require('mongoose');
 
 var schemas = {};
 
-schemas.Events = mongoose.model('events', {
+schemas.EventsTimespans = new mongoose.Schema({
+    start: Date,
+    end: Date
+});
+
+schemas.Events = new mongoose.Schema({
     name : String,
     description : String,
     categories : [String],

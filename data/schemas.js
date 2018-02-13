@@ -8,21 +8,21 @@ schemas.EventsTimespans = new mongoose.Schema({
 });
 
 schemas.Events = new mongoose.Schema({
-    name : String,
-    description : String,
-    categories : [String],
-    place : {
-        name : String,
-        loc : {
+    name : String,  // name of the event
+    description : String,   // description of the event
+    categories : [String],  // list of event categories
+    place : {   // where the event takes place
+        name : String,  // name of the evnet's location
+        loc : { // GeoJSON object describing the event's geographic location
             type : {type: String, default: 'Point'},
             coordinates: {type: [Number], default: [0, 0]},
         }
     },
-    event_id : {type : String, unique : true},
-    event_times: [{
-        start_time: Date,
-        end_time: Date,
-        ticket_uri : String
+    event_id : {type : String, unique : true},  // EventFeeler id for the event
+    event_times: [{ // list of times the event takes place
+        start_time: Date,       // time the event starts
+        end_time: Date,         // time the event ends
+        ticket_uri : String     // url to buy a ticket for this event time
     }]
 });
 

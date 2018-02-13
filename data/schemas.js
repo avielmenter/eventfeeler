@@ -13,9 +13,9 @@ schemas.Events = new mongoose.Schema({
     categories : [String],
     place : {
         name : String,
-        location : {
-            latitude : Number,
-            longitude : Number
+        loc : {
+            type : [Number],
+            index : '2d'
         }
     },
     event_id : {type : String, unique : true},
@@ -33,10 +33,10 @@ schemas.eventFromFacebook = (fbEvent) => {
     e.description = fbEvent.description;
     e.place = {
         name: fbEvent.place.name,
-        location: fbEvent.place.location === undefined ? undefined : {
-            latitude: fbEvent.place.location.latitude,
-            longitude: fbEvent.place.location.longitude
-        }
+        loc: fbEvent.place.location === undefined ? undefined : [
+            fbEvent.place.location.longitude,
+            fbEvent.place.location.latitude
+        ]
     };
     e.event_id = fbEvent.id;
 

@@ -15,9 +15,19 @@ class eventsAPI {
         if (encompassing !== null)
             return;
 
+        var earliestEnd = await etsModel.findOne({ // don't search the _whole_ timespan queried if not necessary
+            end: {$gte: since, $lte: until},
+            start: {$lte: since}
+        }).sort({end: 1});
+
+        var latestStart = await etsModel.findOne({
+            start: {$gte: since, $lte: until},
+            end: {$gte: until}
+        }).sort({start: -1});
+
         var fbEventsAPI = require('../data/fbEvents')(this.api);
-        fbEventsAPI.since = since;
-        fbEventsAPI.until = until;
+        fbEventsAPI.since = earliestEnd == null ? since : earliestEnd.end;
+        fbEventsAPI.until = latestStart == null ? until : latestStart.start;
 
         var events = await fbEventsAPI.get();
         console.log("Saving " + events.length + " new events to database.");

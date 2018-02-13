@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var config = {};
 
 config.port = process.env.EVENTFEELER_PORT || process.env.PORT;

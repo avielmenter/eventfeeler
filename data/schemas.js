@@ -12,8 +12,8 @@ schemas.Events = new mongoose.Schema({
     description : String,                                   // description of the event
     categories : [String],                                  // list of event categories
     place : {                                               // where the event takes place
-        name : String,                                      // name of the evnet's location
-        loc : {                                             // GeoJSON object describing the event's geographic location
+        name : String,                                      // name of the event's location
+        loc : {                                             // GeoJSON object describing the event's location
             type : {type: String, default: 'Point'},
             coordinates: {type: [Number], default: [0, 0]}, // location coordinates in order [long, lat]
         }

@@ -31,6 +31,9 @@ You can set these environment variables using your operating system, or you can 
 # Run
 To run EventFeeler, navigate to the `eventfeeler` folder, and start the application using the command `npm start`.
 
+# APIs
+See the [API documentation](https://github.com/avielmenter/eventfeeler/tree/master/api) for information on how to use the EventFeeler APIs.
+
 # Collaborators
 Mohammad Bouzari
 

@@ -1,6 +1,6 @@
 # EventFeeler API
 
-EventFeeler objects can be requested by making an HTTP GET request to a page in the `api` directory. The following sections describe how each EventFeeler API can be accessed:
+EventFeeler objects can be requested by making an HTTP GET request to a page in the `api` directory. The following sections describe how each EventFeeler API can be accessed.
 
 ## /api/events
 
@@ -28,7 +28,7 @@ This API returns a list of `event` objects in the following format:
     description : String,                                   // description of the event
     categories : [String],                                  // list of event categories
     place : {                                               // where the event takes place
-        name : String,                                      // name of the evnet's location
+        name : String,                                      // name of the event's location
         loc : {                                             // GeoJSON object describing the event's geographic location
             type : {type: String, default: 'Point'},
             coordinates: {type: [Number], default: [0, 0]}, // location coordinates in order [long, lat]

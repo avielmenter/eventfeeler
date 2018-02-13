@@ -61,7 +61,7 @@ class fbEvents
                         if (this.limit !== undefined && events.length >= this.limit)
                             return events;
                     }
-                    
+
                     placeEvents = await fbPaging.next(placeEvents);
                 }
             }
@@ -98,10 +98,10 @@ class fbEvents
 
         Promise.all(inserts)
         .then(() => {
-            resolve();
+            // do nothing
         })
         .catch((err) => {
-            reject(err);
+            throw err;
         });
     }
 }

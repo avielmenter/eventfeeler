@@ -8,6 +8,13 @@ schemas.EventsTimespans = new mongoose.Schema({
 });
 
 schemas.Events = new mongoose.Schema({
+    event_id : {                                            // EventFeeler ID for the event
+        type : {
+            orig_id: [String],                              // ID in the original event datasource
+            from: String                                    // origin datasource for the event (e.g. Facebook)
+        },
+        unique : true
+    },
     name : String,                                          // name of the event
     description : String,                                   // description of the event
     categories : [String],                                  // list of event categories
@@ -18,7 +25,6 @@ schemas.Events = new mongoose.Schema({
             coordinates: {type: [Number], default: [0, 0]}, // location coordinates in order [long, lat]
         }
     },
-    event_id : {type : String, unique : true},              // EventFeeler id for the event
     event_times: [{                                         // list of times the event takes place
         start_time: Date,                                   // time the event starts
         end_time: Date,                                     // time the event ends
@@ -30,6 +36,10 @@ schemas.Events.index({'place.loc': '2dsphere'});
 
 schemas.eventFromFacebook = (fbEvent) => {
     var e = {};
+    e.event_id = {
+        orig_id: fbEvent.id,
+        from: "Facebook"
+    };
 
     e.name = fbEvent.name;
     e.description = fbEvent.description;
@@ -42,7 +52,6 @@ schemas.eventFromFacebook = (fbEvent) => {
                 fbEvent.place.location.latitude
         ]}
     };
-    e.event_id = fbEvent.id;
 
     e.event_times = [];
 

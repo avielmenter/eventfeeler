@@ -24,6 +24,13 @@ This API returns a list of `event` objects in the following format:
 
 ```javascript
 [{
+    event_id : {                                            // EventFeeler ID for the event
+        type : {
+            orig_id: [String],                              // ID in the original event datasource
+            from: String                                    // origin datasource for the event (e.g. Facebook)
+        },
+        unique : true
+    },
     name : String,                                          // name of the event
     description : String,                                   // description of the event
     categories : [String],                                  // list of event categories
@@ -34,7 +41,6 @@ This API returns a list of `event` objects in the following format:
             coordinates: {type: [Number], default: [0, 0]}, // location coordinates in order [long, lat]
         }
     },
-    event_id : {type : String, unique : true},              // EventFeeler id for the event
     event_times: [{                                         // list of times the event takes place
         start_time: Date,                                   // time the event starts
         end_time: Date,                                     // time the event ends

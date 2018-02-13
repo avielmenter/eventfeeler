@@ -2,22 +2,16 @@ var axios = require('axios');
 
 var fbPaging = {};
 
-fbPaging.next = obj => {
-    return new Promise((resolve, reject) => {
-        if (obj.paging === undefined || obj.paging.next === undefined)
-        {
-            resolve(null);
-            return;
-        }
+fbPaging.next = async function(obj) {
+    if (obj.paging === undefined || obj.paging.next === undefined)
+        return null;
 
-        axios.get(
-            obj.paging.next
-        ).then(o => {
-            resolve(o.data);
-        }).catch(error => {
-            reject(error);
-        });
-    });
+    try {
+        var response = await axios.get(obj.paging.next);
+        return response.data;
+    } catch (e) {
+        throw e;
+    } 
 }
 
 module.exports = fbPaging;

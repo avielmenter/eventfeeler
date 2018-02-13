@@ -26,6 +26,8 @@ To run this application, you must first configure certain environment variables 
 - `EVENTFEELER_FB_APP_ID`: An application ID for the Facebook Graph API.
 - `EVENTFEELER_FB_APP_SECRET`: An application secret for the Facebook Graph API.
 
+You can set these environment variables using your operating system, or you can configure them in a `.env` file placed in the root of the `eventfeeler` directory.
+
 # Run
 To run EventFeeler, navigate to the `eventfeeler` folder, and start the application using the command `npm start`.
 

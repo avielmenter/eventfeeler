@@ -80,13 +80,23 @@ class eventsAPI {
         await this.ensureDBRecency(since, until);
         var eventsModel = this.api.mongoose.model('events', this.api.schemas.Events);
 
-        var events = await eventsModel.find({
-            event_times: { $elemMatch: {
+        var mQuery = eventsModel.find({
+            event_times: { $elemMatch : {
                 start_time: {$gte: since},
                 end_time: {$lte: until}
             }}
         });
 
+        if (this.query.nearLat && this.query.nearLong && this.query.distance) {
+            mQuery.where('place.loc').near({
+                center: [this.query.nearLong, this.query.nearLat],
+                spherical: true,
+                maxDistance: this.query.distance / 111120.0 // meters to degrees(???)
+            });
+        }
+
+        var events = await mQuery;
+        console.log("Returning " + events.length + " events.");
         return events;
     }
 }

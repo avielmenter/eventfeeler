@@ -14,8 +14,8 @@ schemas.Events = new mongoose.Schema({
     place : {
         name : String,
         loc : {
-            type : [Number],
-            index : '2d'
+            type : {type: String, default: 'Point'},
+            coordinates: {type: [Number], default: [0, 0]},
         }
     },
     event_id : {type : String, unique : true},
@@ -26,6 +26,8 @@ schemas.Events = new mongoose.Schema({
     }]
 });
 
+schemas.Events.index({'place.loc': '2dsphere'});
+
 schemas.eventFromFacebook = (fbEvent) => {
     var e = {};
 
@@ -33,10 +35,12 @@ schemas.eventFromFacebook = (fbEvent) => {
     e.description = fbEvent.description;
     e.place = {
         name: fbEvent.place.name,
-        loc: fbEvent.place.location === undefined ? undefined : [
-            fbEvent.place.location.longitude,
-            fbEvent.place.location.latitude
-        ]
+        loc: fbEvent.place.location === undefined ? undefined : {
+            type: 'Point',
+            coordinates: [
+                fbEvent.place.location.longitude,
+                fbEvent.place.location.latitude
+        ]}
     };
     e.event_id = fbEvent.id;
 

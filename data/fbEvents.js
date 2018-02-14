@@ -77,10 +77,10 @@ class fbEvents
         var inserts = Array();
 
         for (let e of events) {
-            var schemaEvent = schemas.eventFromFacebook(e);
+            var schemaEvent = schemas.Events.fromFacebook(e);
 
             inserts[inserts.length] = new Promise((res, rej) => {
-                var eventModel = this.api.mongoose.model('events', schemas.Events);
+                var eventModel = this.api.mongoose.model('events', schemas.Events.schema);
 
                 eventModel.findOneAndUpdate(
                     { 'event_id' : schemaEvent.event_id },

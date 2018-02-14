@@ -5,7 +5,7 @@ class eventsAPI {
     }
 
     async ensureDBRecency(since, until) {
-        var etsModel = this.api.mongoose.model('events_timespans', this.api.schemas.EventsTimespans);
+        var etsModel = this.api.mongoose.model('events_timespans', this.api.schemas.EventsTimespans.schema);
 
         var encompassing = await etsModel.findOne({ // is this timespan already filled with events?
             start: {$lte: since},
@@ -78,7 +78,7 @@ class eventsAPI {
             throw new Error("You cannot request more than a week's worth of events at a time.");
 
         await this.ensureDBRecency(since, until);
-        var eventsModel = this.api.mongoose.model('events', this.api.schemas.Events);
+        var eventsModel = this.api.mongoose.model('events', this.api.schemas.Events.schema);
 
         var mQuery = eventsModel.find({
             event_times: { $elemMatch : {

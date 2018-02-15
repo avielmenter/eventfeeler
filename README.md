@@ -28,6 +28,8 @@ To run this application, you must first configure certain environment variables 
 
 You can set these environment variables using your operating system, or you can configure them in a `.env` file placed in the root of the `eventfeeler` directory.
 
+A `template.env` file is included with the project. You can rename this file to `.env`, configure the variables contained within the file, and add the database user and password variables as necessary to set up your project.
+
 # Run
 To run EventFeeler, navigate to the `eventfeeler` folder, and start the application using the command `npm start`.
 

@@ -25,6 +25,8 @@ To run this application, you must first configure certain environment variables 
 - `EVENTFEELER_DB_PASSWORD`: Password for MongoDB access.
 - `EVENTFEELER_FB_APP_ID`: An application ID for the Facebook Graph API.
 - `EVENTFEELER_FB_APP_SECRET`: An application secret for the Facebook Graph API.
+- `EVENTFEELER_TWITTER_KEY`: An application key for the Twitter API.
+- `EVENFEELER_TWITTER_SECRET`: An application secret for the Twitter API.
 
 You can set these environment variables using your operating system, or you can configure them in a `.env` file placed in the root of the `eventfeeler` directory.
 

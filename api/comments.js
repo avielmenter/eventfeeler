@@ -8,9 +8,8 @@ class commentsAPI {
 
     async ensureDBRecency(ev) {
         var commentsModel = this.api.mongoose.model('Comment', this.api.schemas.Comments.schema);
-        var dbComment = await commentsModel.findOne({ event_id: ev._id });
-        if (dbComment)
-            return;
+
+        var dbComment = await commentsModel.findOne({ event_id: ev._id }).sort({'created_at': -1});
 
         this.api.ensureTwitterAuth();
 
@@ -23,7 +22,7 @@ class commentsAPI {
         tweets.distance = 30;
 
         for (let time of ev.event_times) { // adds half an hour to catch pre and post event tweets
-            tweets.since = moment(time.start_time).add(-30, 'minute');
+            tweets.since = dbComment ? moment(dbComment.created_at) : moment(time.start_time).add(-30, 'minute');
             tweets.until = time.end_time ? moment(time.end_time).add(30, 'minute') : moment(time.start_time).clone().add(3, 'hour');
 
             twitterComments = twitterComments.concat(await tweets.get());

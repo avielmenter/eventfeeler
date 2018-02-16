@@ -19,4 +19,18 @@ router.get('/events', function(req, res, next) {
     });
 });
 
+router.get('/comments', function(req, res, next) {
+    var commentsAPI = require('../api/comments')(api, req.query);
+
+    commentsAPI.get()
+    .then(comments => {
+        res.json(comments)
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500);
+        res.send("ERROR");
+    });
+});
+
 module.exports = router;

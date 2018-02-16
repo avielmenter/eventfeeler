@@ -19,7 +19,7 @@ class fbEvents
         if (this.lat == null || this.long == null || this.api.FB_ACCESS_TOKEN == null)
             return null;
 
-        var url = this.api.FB_GRAPH + "type=place&center=" + this.lat + "," + this.long;
+        var url = this.api.FB_GRAPH + "/search?type=place&center=" + this.lat + "," + this.long;
 
         if (this.distance !== undefined)
             url += "&" + this.distance;

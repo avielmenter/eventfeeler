@@ -48,3 +48,40 @@ This API returns a list of `event` objects in the following format:
     }]
 }]
 ```
+
+## /api/comments
+
+This API returns `comment` objects attached to the specified event.
+
+### Parameters
+- `event_id`\*: the MongoDB Object ID for the event whose comments will be fetched
+
+\* - required parameter.
+
+### Returns
+This API returns a list of `comment` objects in the following format:
+
+```javascript
+[{
+    comment_id : {                                      // EventFeeler ID for the comment
+        type : {
+            orig_id: [String],                          // ID in the original comment datasource
+            from: String                                // name of the datasource this comment comes from
+        },
+        unique: true
+    },
+    event_id : {                                        // Object ID of the corresponding event
+        type: String,
+        required: true
+    },
+    text : [String],
+    entities : [{                                       // entities like images or hashtags in the comment
+        str : [String],                                 // string representation of the entity (e.g. image url)
+        entity_type : [String]                          // type of the entity (e.g. image, hashtag, etc.)
+    }],
+    loc : {                                             // GeoJSON object describing the comment's location
+        type : {type: String, default: 'Point'},
+        coordinates: {type: [Number], default: [0, 0]}, // location coordinates in order [long, lat]
+    }
+}]
+```

@@ -24,7 +24,7 @@ router.get('/comments', function(req, res, next) {
 
     commentsAPI.get()
     .then(comments => {
-        res.json(comments)
+        res.send(JSON.stringify(comments, null, '\t'));//res.json(comments)
     })
     .catch(err => {
         console.log(err);

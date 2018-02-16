@@ -15,7 +15,7 @@ router.get('/events', function(req, res, next) {
     .catch(err => {
         console.log(err);
         res.status(500);
-        res.send("ERROR");
+        next();
     });
 });
 
@@ -24,12 +24,12 @@ router.get('/comments', function(req, res, next) {
 
     commentsAPI.get()
     .then(comments => {
-        res.send(JSON.stringify(comments, null, '\t'));//res.json(comments)
+        res.json(comments)
     })
     .catch(err => {
         console.log(err);
         res.status(500);
-        res.send("ERROR");
+        next();
     });
 });
 

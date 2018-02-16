@@ -25,13 +25,24 @@ class eventsAPI {
             end: {$gte: until}
         }).sort({start: -1});
 
+        // SAVE FACEBOOK EVENTS
         var fbEventsAPI = require('../data/fbEvents')(this.api);
         fbEventsAPI.since = earliestEnd == null ? since : earliestEnd.end;
         fbEventsAPI.until = latestStart == null ? until : latestStart.start;
 
         var events = await fbEventsAPI.get();
-        console.log("Saving " + events.length + " new events to database.");
+        console.log("Saving " + events.length + " new facebook events to database.");
         await fbEventsAPI.save(events);
+        console.log("Events saved.");
+
+        // SAVE UCI EVENTS
+        var calAPI = require('../data/calendarEvents.js')(this.api);
+        calAPI.since = fbEventsAPI.since;
+        calAPI.until = fbEventsAPI.until;
+
+        var vevents = await calAPI.get();
+        console.log("Saving " + vevents.length + " new UCI calendar events to database.");
+        await calAPI.save(vevents);
         console.log("Events saved.");
 
         var ts = new etsModel({    // timespan for events we've just saved

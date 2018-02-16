@@ -75,6 +75,42 @@ class Events
 
         return e;
     }
+
+    fromCalendar(calEvent) {
+        var e = {};
+
+        e.event_id = {
+            orig_id: calEvent.getFirstPropertyValue('uid'),
+            from: 'Calendar'
+        };
+
+        e.name = calEvent.getFirstPropertyValue('summary');
+        e.description = calEvent.getFirstPropertyValue('description');
+
+        var locCoords = calEvent.getFirstPropertyValue('geo');
+        if (locCoords)
+            locCoords = locCoords.reverse();
+        else
+            locCoords = [0, 0];
+
+        e.place = {
+            name: calEvent.getFirstPropertyValue('location'),
+            loc: {
+                type: 'Point',
+                coordinates: locCoords
+            }
+        };
+
+        var start = calEvent.getFirstPropertyValue('dtstart');
+        var end = calEvent.getFirstPropertyValue('dtend');
+
+        e.event_times = [{
+            start_time: start ? new Date(start) : undefined,
+            end_time: end ? new Date(end) : undefined
+        }];
+
+        return e;
+    }
 }
 
 module.exports = new Events();

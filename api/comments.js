@@ -28,7 +28,7 @@ class commentsAPI {
             twitterComments = twitterComments.concat(await tweets.get());
         }
 
-        tweets.save(twitterComments, ev._id);
+        await tweets.save(twitterComments, ev._id);
     }
 
     async get() {

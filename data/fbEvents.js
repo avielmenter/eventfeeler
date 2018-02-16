@@ -96,13 +96,7 @@ class fbEvents
             });
         }
 
-        Promise.all(inserts)
-        .then(() => {
-            // do nothing
-        })
-        .catch((err) => {
-            throw err;
-        });
+        await Promise.all(inserts);
     }
 }
 

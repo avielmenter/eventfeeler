@@ -43,14 +43,14 @@ class Comments {
         for (let h of tweet.entities.hashtags) {
             c.entities.push({
                 str: h,
-                type: "hashtag"
+                entity_type: "hashtag"
             });
         }
 
         for (let u of tweet.entities.urls) {
             c.entities.push({
                 str: u.expanded_url,
-                type: "url"
+                entity_type: "url"
             });
         }
 

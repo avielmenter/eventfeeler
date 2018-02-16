@@ -16,8 +16,8 @@ class Comments {
             },
             text : [String],
             entities : [{                                       // entities like images or hashtags in the comment
-                str : [String],                                 // string representation of the entity (e.g. image url)
-                entity_type : [String]                          // type of the entity (e.g. image, hashtag, etc.)
+                str : String,                                   // string representation of the entity (e.g. image url)
+                entity_type : String                            // type of the entity (e.g. image, hashtag, etc.)
             }],
             loc : {                                             // GeoJSON object describing the comment's location
                 type : {type: String, default: 'Point'},

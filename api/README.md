@@ -26,7 +26,7 @@ This API returns a list of `event` objects in the following format:
 [{
     event_id : {                                            // EventFeeler ID for the event
         type : {
-            orig_id: [String],                              // ID in the original event datasource
+            orig_id: String,                                // ID in the original event datasource
             from: String                                    // origin datasource for the event (e.g. Facebook)
         },
         unique : true

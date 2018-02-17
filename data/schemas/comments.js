@@ -5,7 +5,7 @@ class Comments {
         this.schema = new mongoose.Schema({
             comment_id : {                                      // EventFeeler ID for the comment
                 type : {
-                    orig_id: [String],                          // ID in the original comment datasource
+                    orig_id: String,                            // ID in the original comment datasource
                     from: String                                // name of the datasource this comment comes from
                 },
                 unique: true
@@ -14,7 +14,11 @@ class Comments {
                 type: String,
                 required: true
             },
-            text : [String],
+            user : {                                            // the user who made the comment
+                name : String,                                  // user name or screen name
+                profile_url : String                            // URL for the user's profile, if available
+            },
+            text : String,
             entities : [{                                       // entities like images or hashtags in the comment
                 str : String,                                   // string representation of the entity (e.g. image url)
                 entity_type : String                            // type of the entity (e.g. image, hashtag, etc.)
@@ -34,6 +38,10 @@ class Comments {
         c.comment_id = {
             orig_id: tweet.id_str,
             from: "Twitter"
+        };
+        c.user = {
+            name: tweet.user.name,
+            profile_url: "https://twitter.com/" + (tweet.user.screen_name || "")
         };
         c.text = tweet.text;
         c.loc = tweet.coordinates;

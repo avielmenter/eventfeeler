@@ -8,7 +8,19 @@ function mainController($scope, $http)
     $http.get('/api/events?since=' + last_week + '&until=' + (new Date()))
         .success(function(data){
             $scope.events = data;
-            console.log(data);
+            console.log("Retrieved" + $scope.events.length + " events");
+            /*
+            for (var i = 0; i < $scope.events.length; i++) {
+                $http.get('/api/comments?event_id=' + $scope.events[i]._id)
+                    .success(function(c){
+                        if ($scope.events[i])
+                            $scope.events[i].comments = c;
+                    })
+                    .error(function(c){
+                        if ($scope.events[i])
+                            $scope.events[i].comments = [];
+                    });
+            }//*/
         })
         .error(function(data){
             $scope.events = [];

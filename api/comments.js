@@ -17,6 +17,9 @@ class commentsAPI {
 
         var twitterComments = [];
 
+        if (!ev.place.loc || !ev.place.loc.coordinates)
+            return []; // can't find tweets for unlocatable event
+
         tweets.long = ev.place.loc.coordinates[0];
         tweets.lat = ev.place.loc.coordinates[1];
         tweets.distance = 30;

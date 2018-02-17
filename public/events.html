@@ -12,6 +12,7 @@
         <ul ng-repeat="event in events">
             <li><b>Name:</b> {{event.name}}</li>
             <li><b>Place:</b> {{event.place.name}}</li>
+            <li><b>ID:</b> {{event._id}}</li>
             <li><b>Time:</b>
                 <ul ng-repeat="event_time in event.event_times">
                     <li><b>Starts At:</b> {{event_time.start_time}}</li>
@@ -27,6 +28,16 @@
             <li><b>Categories:</b>
                 <ul>
                     <li ng-repeat="cat in event.categories">{{cat}}</li>
+                </ul>
+            </li>
+            <li><b>Comments:</b>
+                <ul>
+                    <li ng-repeat"comment in event.comments">
+                        <a href="{{comment.user.profile_url}}">
+                            {{comment.user.name}}
+                        </a>&nbsp;
+                        {{comment.text}}
+                    </li>
                 </ul>
             </li>
         </ul>

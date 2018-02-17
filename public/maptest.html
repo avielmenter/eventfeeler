@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<title>Map of Events</title>
+<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+</head>
+<body>
+<div id="map" style="height: 800px; width: 800px;">
+</div>
+</body>
+<script>
+var xmlhttp = new XMLHttpRequest();
+var next_week = new Date();
+next_week.setDate(next_week.getDate() + 7);
+var url = '/api/events?since=' + (new Date()) + '&until=' + next_week;
+var locations;
+
+xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        locations = JSON.parse(this.responseText);
+    }
+};
+xmlhttp.open("GET", url, false);
+xmlhttp.send();
+
+var map = new google.maps.Map(document.getElementById('map'), {
+  zoom: 12,
+  center: new google.maps.LatLng(33.651964, -117.844886),
+  mapTypeId: google.maps.MapTypeId.ROADMAP
+});
+
+var infowindow = new google.maps.InfoWindow();
+
+var marker, i;
+
+for (i = 0; i < locations.length; i++) {
+  if(locations[i].place.loc != null){
+  marker = new google.maps.Marker({
+    position: new google.maps.LatLng(locations[i].place.loc.coordinates[1], locations[i].place.loc.coordinates[0]),
+    map: map
+  })};
+
+  google.maps.event.addListener(marker, 'click', (function(marker, i) {
+    return function() {
+      infowindow.setContent("<center><h1>"+locations[i].name+"<h1><br><h2>Location: "+locations[i].place.name +"</h2><br>"+locations[i].description+"</center>");
+      infowindow.open(map, marker);
+    }
+  })(marker, i));
+}
+
+</script>
+
+</html>

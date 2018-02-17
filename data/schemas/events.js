@@ -26,7 +26,8 @@ class Events
                 start_time: Date,                                   // time the event starts
                 end_time: Date,                                     // time the event ends
                 ticket_uri : String                                 // url to buy a ticket for this event time
-            }]
+            }],
+            comments_fetched : Boolean                              // are this event's comments in the DB?
         });
 
         this.schema.index({'place.loc': '2dsphere'});
@@ -73,6 +74,8 @@ class Events
             }
         }
 
+        e.comments_fetched = false;
+
         return e;
     }
 
@@ -108,6 +111,8 @@ class Events
             start_time: start ? new Date(start) : undefined,
             end_time: end ? new Date(end) : undefined
         }];
+
+        e.comments_fetched = false;
 
         return e;
     }

@@ -45,7 +45,8 @@ This API returns a list of `event` objects in the following format:
         start_time: Date,                                   // time the event starts
         end_time: Date,                                     // time the event ends
         ticket_uri : String                                 // url to buy a ticket for this event time
-    }]
+    }],
+    comments_fetched : Boolean                              // are this event's comments in the DB?
 }]
 ```
 

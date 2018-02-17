@@ -7,20 +7,21 @@ function mainController($scope, $http)
 
     $http.get('/api/events?since=' + last_week + '&until=' + (new Date()))
         .success(function(data){
-            $scope.events = data;
-            console.log("Retrieved" + $scope.events.length + " events");
+            var events = data;
             /*
-            for (var i = 0; i < $scope.events.length; i++) {
-                $http.get('/api/comments?event_id=' + $scope.events[i]._id)
+            for (var i = 0; i < events.length; i++) {
+                $http.get('/api/comments?event_id=' + events[i]._id)
                     .success(function(c){
-                        if ($scope.events[i])
-                            $scope.events[i].comments = c;
+                        if (events[i])
+                            events[i].comments = c;
                     })
                     .error(function(c){
-                        if ($scope.events[i])
-                            $scope.events[i].comments = [];
+                        if (events[i])
+                            events[i].comments = [];
                     });
             }//*/
+            $scope.events = events;
+            console.log("Retrieved" + $scope.events.length + " events");
         })
         .error(function(data){
             $scope.events = [];

@@ -5,6 +5,7 @@ var config = {};
 config.basedir = __dirname;
 
 config.port = process.env.EVENTFEELER_PORT || process.env.PORT;
+config.sessionSecret = process.env.EVENTFEELER_SESSION_SECRET || "dev key only";
 
 config.dbServer = process.env.EVENTFEELER_DB_SERVER;
 config.dbSchema = process.env.EVENTFEELER_DB_SCHEMA;

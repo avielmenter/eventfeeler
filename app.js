@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var methodOverride = require('method-override');
 var expressLess = require('express-less');
+var session = require('express-session');
+
 var config = require('./config');
 
 var api = require('./routes/api');
@@ -25,6 +27,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
+app.use(session({
+    secret: config.sessionSecret,
+    resave: true,
+    saveUninitialized: true,
+    cookie: { maxAge: 24 * 60 * 60 * 1000}
+}));
 //app.use(cookieParser());
 
 app.use('/api', api);

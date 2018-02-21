@@ -12,9 +12,7 @@ module.exports = api => {
             res.json(results);
         })
         .catch(err => {
-            console.log(err);
-            res.status(500);
-            next();
+            next(err);
         });
     });
 
@@ -24,12 +22,26 @@ module.exports = api => {
 
         reqAPI.get()
         .then(result => {
-            res.json(result)
+            res.json(result);
         })
         .catch(err => {
-            console.log(err);
-            res.status(500);
-            next();
+            next(err);
+        });
+    });
+
+    router.post('/:objType/:objID', function(req, res, next) {
+        var path = '../api' + req.params.objType;
+        var reqAPI = require(path)(api, req.params.objID);
+
+        if (!req.user)
+            next(new Error("You must be logged in to use the POST APIs."));
+
+        reqAPI.post(req)
+        .then(result => {
+            res.json(result);
+        })
+        .catch(err => {
+            next(err);
         });
     });
 

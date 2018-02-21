@@ -13,7 +13,8 @@ This API returns an `event` object in the following format:
 
 ```javascript
 [{
-    event_id : {                                            // EventFeeler ID for the event
+    _id : String,                                           // Event's ID in the database
+    event_id : {                                            // original data source's ID for the event
         type : {
             orig_id: String,                                // ID in the original event datasource
             from: String                                    // origin datasource for the event (e.g. Facebook)
@@ -41,13 +42,14 @@ This API returns an `event` object in the following format:
 
 ## GET /comment/{comment ID}
 
-This API returns a `comment` objects matching the specified ID.
+This API returns a `comment` object matching the specified ID.
 
 ### Returns
 This API returns a `comment` object in the following format:
 
 ```javascript
 {
+    _id : String,                                       // Comment's ID in the database
     comment_id : {                                      // EventFeeler ID for the comment
         type : {
             orig_id: String,                            // ID in the original comment datasource
@@ -59,9 +61,9 @@ This API returns a `comment` object in the following format:
         type: String,
         required: true
     },
-    user : {                                            // the user who made the comment
-        name : String,                                  // user name or screen name
-        profile_url : String                            // URL for the user's profile, if available
+    user_id : {                                         // the ID of the user who made the comment
+        type : String,
+        required : true
     },
     text : String,
     entities : [{                                       // entities like images or hashtags in the comment
@@ -71,6 +73,31 @@ This API returns a `comment` object in the following format:
     loc : {                                             // GeoJSON object describing the comment's location
         type : {type: String, default: 'Point'},
         coordinates: {type: [Number], default: [0, 0]}, // location coordinates in order [long, lat]
+    }
+}
+```
+
+## GET /user/{user ID}
+
+This API returns a `user` object matching the specified ID.
+
+### Returns
+This API returns a `user` object in the following format:
+
+```javascript
+{
+    _id : String,               // User's ID in the database
+    primary_profile : String,   // social media profile determining user's appearance on EventFeeler
+    twitter : {                 // information about this user's twitter profile
+        twitter_id : {          // User's ID on Twitter
+            type: String,
+            trim: true,
+            unique: true,
+            sparse: true
+        },
+        username : String,      // User's username on Twitter
+        display_name : String,  // User's display name on Twitter
+        image_url : String,     // URL of the user's profile image
     }
 }
 ```

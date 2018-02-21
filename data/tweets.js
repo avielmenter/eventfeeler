@@ -43,11 +43,31 @@ class tweets {
         return statuses;
     }
 
+    async verifyUserInDB(user) {
+        var dbUser = {
+            twitter: {
+                twitter_id: user.id_str,
+                username: user.screen_name,
+                display_name: user.name,
+                profile_url: user.profile_image_url_https
+            }
+        };
+
+        var twitterUser = await this.api.schemas.Users.model.findOneAndUpdate(
+            {'twitter.twitter_id': user.id_str},
+            dbUser,
+            {upsert: true, new: true}
+        );
+
+        return twitterUser;
+    }
+
     async save(comments, event_id) {
         var inserts = Array();
 
         for (let c of comments) {
-            var schemaComment = this.api.schemas.Comments.fromTwitter(c, event_id);
+            var efUser = await this.verifyUserInDB(c.user);
+            var schemaComment = this.api.schemas.Comments.fromTwitter(c, event_id, efUser._id);
 
             inserts[inserts.length] = new Promise((res, rej) => {
                 var eventModel = this.api.mongoose.model('comments', this.api.schemas.Comments.schema);

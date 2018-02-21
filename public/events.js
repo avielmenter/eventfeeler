@@ -10,7 +10,7 @@ function mainController($scope, $http)
             var events = data;
             /*
             for (var i = 0; i < events.length; i++) {
-                $http.get('/api/comments?event_id=' + events[i]._id)
+                $http.get('/api/search/comments?event_id=' + events[i]._id)
                     .success(function(c){
                         if (events[i])
                             events[i].comments = c;

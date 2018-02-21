@@ -14,9 +14,9 @@ class Comments {
                 type: String,
                 required: true
             },
-            user : {                                            // the user who made the comment
-                name : String,                                  // user name or screen name
-                profile_url : String                            // URL for the user's profile, if available
+            user_id : {                                         // the ID of the user who made the comment
+                type : String,
+                required : true
             },
             text : String,
             entities : [{                                       // entities like images or hashtags in the comment
@@ -34,17 +34,16 @@ class Comments {
         this.model = mongoose.model('comments', this.schema);
     }
 
-    fromTwitter(tweet, event_id) {
+    fromTwitter(tweet, event_id, user_id) {
         var c = {};
         c.event_id = event_id;
         c.comment_id = {
             orig_id: tweet.id_str,
             from: "Twitter"
         };
-        c.user = {
-            name: tweet.user.name,
-            profile_url: "https://twitter.com/" + (tweet.user.screen_name || "")
-        };
+
+        c.user_id = user_id;
+
         c.text = tweet.text;
         c.loc = tweet.coordinates;
 
@@ -52,7 +51,7 @@ class Comments {
 
         for (let h of tweet.entities.hashtags) {
             c.entities.push({
-                str: h,
+                str: h.text,
                 entity_type: "hashtag"
             });
         }

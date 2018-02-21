@@ -5,12 +5,13 @@ var router = express.Router();
 
 var api = require('../data/api')(config);
 
-router.get('/search/events', function(req, res, next) {
-    var eventsAPI = require('../api/search/events')(api, req.query);
+router.get('/:objType/:objID', function(req, res, next) {
+    var path = '../api/' + req.params.objType;
+    var reqAPI = require(path)(api, req.params.objID);
 
-    eventsAPI.get()
-    .then(events => {
-        res.json(events);
+    reqAPI.get()
+    .then(result => {
+        res.json(result)
     })
     .catch(err => {
         console.log(err);
@@ -19,12 +20,13 @@ router.get('/search/events', function(req, res, next) {
     });
 });
 
-router.get('/search/comments', function(req, res, next) {
-    var commentsAPI = require('../api/search/comments')(api, req.query);
+router.get('/search/:apiPath', function(req, res, next) {
+    var path = '../api/search/' + req.params.apiPath;
+    var reqAPI = require(path)(api, req.query);
 
-    commentsAPI.get()
-    .then(comments => {
-        res.json(comments)
+    reqAPI.get()
+    .then(results => {
+        res.json(results);
     })
     .catch(err => {
         console.log(err);

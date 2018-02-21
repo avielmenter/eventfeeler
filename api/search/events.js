@@ -76,14 +76,6 @@ class eventsAPI {
         }).remove();
     }
 
-    async getSingleEvent(id) {
-        this.api.connect();
-        var eventsModel = this.api.mongoose.model('events', this.api.schemas.Events.schema);
-
-        var e = await eventsModel.findById(id);
-        return e;
-    }
-
     async get() {
         if (!this.query.since || !this.query.until)
             throw new Error("You must specify a start and end date for your query.");

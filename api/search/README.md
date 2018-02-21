@@ -1,15 +1,26 @@
 # EventFeeler API
 
-EventFeeler objects can be requested by making an HTTP GET request to a page in the `api` directory, or created and altered by making an HTTP POST request to the corresponding page. Objects manipulated using these APIs must be identified using their unique database ID. This can be found in the `_id` field of the object.
+EventFeeler objects can be searched by making an HTTP GET request to a page in the `api/search` directory. The following sections describe how each EventFeeler search API can be accessed.
 
-The following sections describe how each EventFeeler API can be accessed.
+## GET /search/events
 
-## GET /event/{event ID}
+This API returns `event` objects matching the query parameters.
 
-This API returns an `event` object matching the specified ID.
+### Parameters
+- `since`\*: retrieve events that have started after this time
+- `until`\*: retrieve events that have started before this time
+- `nearLat`: retrieve events near this latitude
+- `nearLong`: retrieve events near this Longitude
+- `distance`: retrieve events within this distance (in meters) of  the specified location
+
+\* - required parameter.
+
+The `since` and `until` parameters must be within a week of each other.
+
+If you are searching for events by location, the `nearLat`, `nearLong`, and `distance` parameters must all be set.
 
 ### Returns
-This API returns an `event` object in the following format:
+This API returns a list of `event` objects in the following format:
 
 ```javascript
 [{
@@ -36,18 +47,23 @@ This API returns an `event` object in the following format:
         ticket_uri : String                                 // url to buy a ticket for this event time
     }],
     comments_fetched : Boolean                              // are this event's comments in the DB?
-}
+}]
 ```
 
-## GET /comment/{comment ID}
+## GET /search/comments
 
-This API returns a `comment` objects matching the specified ID.
+This API returns `comment` objects attached to the specified event.
+
+### Parameters
+- `event_id`\*: the MongoDB Object ID for the event whose comments will be fetched
+
+\* - required parameter.
 
 ### Returns
-This API returns a `comment` object in the following format:
+This API returns a list of `comment` objects in the following format:
 
 ```javascript
-{
+[{
     comment_id : {                                      // EventFeeler ID for the comment
         type : {
             orig_id: String,                            // ID in the original comment datasource
@@ -72,5 +88,5 @@ This API returns a `comment` object in the following format:
         type : {type: String, default: 'Point'},
         coordinates: {type: [Number], default: [0, 0]}, // location coordinates in order [long, lat]
     }
-}
+}]
 ```

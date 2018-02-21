@@ -2,7 +2,7 @@
 
 EventFeeler objects can be requested by making an HTTP GET request to a page in the `api` directory. The following sections describe how each EventFeeler API can be accessed.
 
-## GET /api/events
+## GET /api/search/events
 
 This API returns `event` objects matching the query parameters.
 
@@ -50,7 +50,7 @@ This API returns a list of `event` objects in the following format:
 }]
 ```
 
-## GET /api/comments
+## GET /api/search/comments
 
 This API returns `comment` objects attached to the specified event.
 

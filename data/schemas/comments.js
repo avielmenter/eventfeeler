@@ -30,6 +30,8 @@ class Comments {
         });
 
         this.schema.index({'loc': '2dsphere'});
+
+        this.model = mongoose.model('comments', this.schema);
     }
 
     fromTwitter(tweet, event_id) {

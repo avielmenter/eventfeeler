@@ -8,6 +8,8 @@ class EventsTimespans
             start: Date,
             end: Date
         });
+
+        this.model = mongoose.model('events_timespans', this.schema);
     }
 }
 

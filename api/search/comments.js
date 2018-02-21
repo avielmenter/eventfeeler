@@ -13,7 +13,7 @@ class commentsAPI {
 
         this.api.ensureTwitterAuth();
 
-        var tweets = require('../data/tweets')(this.api);
+        var tweets = require('../../data/tweets')(this.api);
 
         var twitterComments = [];
 

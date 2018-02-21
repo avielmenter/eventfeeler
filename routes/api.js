@@ -5,8 +5,8 @@ var router = express.Router();
 
 var api = require('../data/api')(config);
 
-router.get('/events', function(req, res, next) {
-    var eventsAPI = require('../api/events')(api, req.query);
+router.get('/search/events', function(req, res, next) {
+    var eventsAPI = require('../api/search/events')(api, req.query);
 
     eventsAPI.get()
     .then(events => {
@@ -19,8 +19,8 @@ router.get('/events', function(req, res, next) {
     });
 });
 
-router.get('/comments', function(req, res, next) {
-    var commentsAPI = require('../api/comments')(api, req.query);
+router.get('/search/comments', function(req, res, next) {
+    var commentsAPI = require('../api/search/comments')(api, req.query);
 
     commentsAPI.get()
     .then(comments => {

@@ -31,6 +31,8 @@ class Events
         });
 
         this.schema.index({'place.loc': '2dsphere'});
+
+        this.model = mongoose.model('events', this.schema);
     }
 
     fromFacebook(fbEvent)

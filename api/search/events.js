@@ -26,7 +26,7 @@ class eventsAPI {
         }).sort({start: -1});
 
         // SAVE FACEBOOK EVENTS
-        var fbEventsAPI = require('../data/fbEvents')(this.api);
+        var fbEventsAPI = require('../../data/fbEvents')(this.api);
         fbEventsAPI.since = earliestEnd == null ? since : earliestEnd.end;
         fbEventsAPI.until = latestStart == null ? until : latestStart.start;
 
@@ -36,7 +36,7 @@ class eventsAPI {
         console.log("Events saved.");
 
         // SAVE UCI EVENTS
-        var calAPI = require('../data/calendarEvents.js')(this.api);
+        var calAPI = require('../../data/calendarEvents.js')(this.api);
         calAPI.since = fbEventsAPI.since;
         calAPI.until = fbEventsAPI.until;
 
@@ -74,6 +74,14 @@ class eventsAPI {
             start: {$gte: ts.start},
             end: {$lte: ts.end}
         }).remove();
+    }
+
+    async getSingleEvent(id) {
+        this.api.connect();
+        var eventsModel = this.api.mongoose.model('events', this.api.schemas.Events.schema);
+
+        var e = await eventsModel.findById(id);
+        return e;
     }
 
     async get() {

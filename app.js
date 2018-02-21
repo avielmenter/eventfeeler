@@ -8,15 +8,19 @@ var mongoose = require('mongoose');
 var methodOverride = require('method-override');
 var expressLess = require('express-less');
 var session = require('express-session');
+var passport = require('passport');
 
 var config = require('./config');
-
-var api = require('./routes/api');
-
-var app = express();
+var api = require('./data/api')(config);
 
 process.env.PORT = config.port;
 
+var apiRouter = require('./routes/api')(api);
+var loginRouter = require('./routes/login')(api);
+
+var app = express();
+
+// ROUTING
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(express.static(__dirname + '/public'));
@@ -35,8 +39,30 @@ app.use(session({
 }));
 //app.use(cookieParser());
 
-app.use('/api', api);
+// PASSPORT SETUP
+passport.serializeUser(function(user, cb) {
+    api.connect();
 
+    api.schemas.Users.save(user)
+        .then(u => { cb(null, u._id); })
+        .catch(err => { cb(err, null); });
+});
+
+passport.deserializeUser(function(id, cb) {
+    api.connect();
+
+    api.schemas.Users.load(id)
+        .then(u => { cb(null, u); })
+        .catch(err => { cb(err, null); });
+});
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/api', apiRouter);
+app.use('/login', loginRouter);
+
+// ERROR HANDLING
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

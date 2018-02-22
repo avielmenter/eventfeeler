@@ -1,4 +1,4 @@
-var express = require('express');
+    var express = require('express');
 
 module.exports = api => {
     var router = express.Router();
@@ -16,6 +16,11 @@ module.exports = api => {
         });
     });
 
+    router.get('/user/current', function(req, res, next) {
+        console.log("REQUESTING USER: " + JSON.stringify(req.user));
+        res.json(req.user);
+    });
+
     router.get('/:objType/:objID', function(req, res, next) {
         var path = '../api/' + req.params.objType;
         var reqAPI = require(path)(api, req.params.objID);
@@ -29,8 +34,8 @@ module.exports = api => {
         });
     });
 
-    router.post('/:objType/:objID', function(req, res, next) {
-        var path = '../api' + req.params.objType;
+    router.post('/:objType/:objID?', function(req, res, next) {
+        var path = '../api/' + req.params.objType;
         var reqAPI = require(path)(api, req.params.objID);
 
         if (!req.user)

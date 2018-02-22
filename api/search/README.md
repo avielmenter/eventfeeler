@@ -81,6 +81,7 @@ This API returns a list of `comment` objects in the following format:
         type : String,
         required : true
     },
+    comment_time : Date,                                // the time the comment was made
     text : String,
     entities : [{                                       // entities like images or hashtags in the comment
         str : String,                                   // string representation of the entity (e.g. image url)

@@ -17,15 +17,24 @@ class commentAPI {
         return c;
     }
 
-    async post(comment) {
-        if (!comment.text || !comment.user_id)
-            throw new Error("You must specify comment text and a comment user to post a comment.");
+    async post(req) {
+        var user = req.user;
+        var comment = req.body;
+
+        if (!comment.text || !user || !comment.event_id)
+            throw new Error("You must specify comment text, a comment user, and an associated event to post a comment.");
+
+        comment.user_id = user._id;
+        comment.comment_time = new Date();
 
         var c = null;
 
         if (!this.comment_id) {
             c = await this.api.schemas.Comments.model.create(comment);
-            await c.update({ comment_id: { orig_id: c._id, from: 'EventFeeler' } });
+            if (!c)
+                throw new Error("No comment matches the specified ID.");
+
+            c = await c.update({ comment_id: { orig_id: c._id, from: 'EventFeeler' } });
         }
         else {
             c = await this.api.schemas.Comments.model.findByIdAndUpdate(this.comment_id, comment, {new: true});

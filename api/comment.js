@@ -31,8 +31,8 @@ class commentAPI {
 
         if (!this.comment_id) {
             c = await this.api.schemas.Comments.model.create(comment);
-            if (!c)
-                throw new Error("No comment matches the specified ID.");
+            if (!c || c.user_id != comment.user_id)
+                throw new Error("No comment matching the specified ID was made by the specified user.");
 
             c = await c.update({ comment_id: { orig_id: c._id, from: 'EventFeeler' } });
         }

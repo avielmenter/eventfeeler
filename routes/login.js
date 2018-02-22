@@ -5,7 +5,7 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 function getCallbackURL(provider) {
     var url = 'http://';
     url += process.env.EVENTFEELER_HOSTNAME;
-    if (process.env.PORT)
+    if (process.env.PORT && process.env.EVENTFEELER_HOSTNAME == 'localhost')
         url += ':' + process.env.PORT;
     url += '/login/' + provider + '/return';
 

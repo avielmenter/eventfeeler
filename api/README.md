@@ -48,9 +48,9 @@ This API returns a [`user`](https://github.com/avielmenter/eventfeeler/tree/mast
 ### Returns
 This API returns a [`user`](https://github.com/avielmenter/eventfeeler/tree/master/data#user) object.
 
-## POST /user/current/attending
+## POST /attending/:eventID
 
-This API can be used to indicate that the currently logged-in user is or is not attending the specified event.
+This API can be used to indicate that the currently logged-in user is or is not attending the event with the specified ID.
 
 ### Parameters
 

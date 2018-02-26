@@ -16,29 +16,6 @@ module.exports = api => {
         });
     });
 
-    router.post('/user/current/attending', function(req, res, next) {
-        if (!req.user)
-            next(new Error("You must be logged in to use the POST APIs"));
-
-        var path = '../api/user';
-        var userAPI = require(path)(api, req.user._id);
-
-        var attending = !req.body.cancel;
-        var event_id = req.body.event_id;
-
-        userAPI.attend(event_id, attending)
-        .then(result => {
-            res.json(result);
-        })
-        .catch(err => {
-            next(err);
-        });
-    });
-
-    router.post('/user/:userID/attending', function(req, res, next){
-        next(new Error("Event attendance can only be changed for the currently logged-in user."));
-    });
-
     router.get('/user/current', function(req, res, next) {
         res.json(req.user);
     });

@@ -54,12 +54,10 @@ This API can be used to indicate that the currently logged-in user is or is not 
 
 ### Parameters
 
-The body of your post request should contain the following parameters:
+The body of your post request can contain the following optional parameter:
 
-- `event_id`\*: The EventFeeler ID for the event the user is or is not attending.
 - `cancel`: If set, this parameter indicates that the user is not attending the event. If left false or blank, it indicates that the user is attending the event.
 
-\* - required parameter.
 
 ### Returns
 This API returns the updated [`user`](https://github.com/avielmenter/eventfeeler/tree/master/data#user) object for the current user.

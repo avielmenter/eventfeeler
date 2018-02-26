@@ -13,8 +13,9 @@ class Users {
                 },
                 username : String,      // User's username on Twitter
                 display_name : String,  // User's display name on Twitter
-                image_url : String,     // URL of the user's profile image
-            }
+                image_url : String      // URL of the user's profile image
+            },
+            attending : [String],       // list of IDs of events the user is attending
         });
 
         this.model = mongoose.model('users', this.schema);
@@ -30,7 +31,8 @@ class Users {
                 username: profile.username,
                 display_name: profile.displayName,
                 image_url: profile.photos.length > 0 ? profile.photos[0].value : undefined
-            }
+            },
+            attending: []
         };
 
         return u;

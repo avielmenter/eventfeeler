@@ -152,7 +152,41 @@ This API returns a `user` object in the following format:
         },
         username : String,      // User's username on Twitter
         display_name : String,  // User's display name on Twitter
-        image_url : String,     // URL of the user's profile image
-    }
+        image_url : String      // URL of the user's profile image
+    },
+    attending : [String],       // list of IDs of events the user is attending
+}
+```
+
+## POST /user/current/attending
+
+This API can be used to indicate that the currently logged-in user is or is not attending the specified event.
+
+### Parameters
+
+The body of your post request should contain the following parameters:
+
+- `event_id`\*: The EventFeeler ID for the event the user is or is not attending.
+- `cancel`\*: If set, this parameter indicates that the user is not attending the event. If left false or blank, it indicates that the user is attending the event.
+
+### Returns
+This API returns the updated `user` object for the current user in the following format:
+
+```javascript
+{
+    _id : String,               // User's ID in the database
+    primary_profile : String,   // social media profile determining user's appearance on EventFeeler
+    twitter : {                 // information about this user's twitter profile
+        twitter_id : {          // User's ID on Twitter
+            type: String,
+            trim: true,
+            unique: true,
+            sparse: true
+        },
+        username : String,      // User's username on Twitter
+        display_name : String,  // User's display name on Twitter
+        image_url : String      // URL of the user's profile image
+    },
+    attending : [String],       // list of IDs of events the user is attending
 }
 ```

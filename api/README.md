@@ -169,6 +169,8 @@ The body of your post request should contain the following parameters:
 - `event_id`\*: The EventFeeler ID for the event the user is or is not attending.
 - `cancel`\*: If set, this parameter indicates that the user is not attending the event. If left false or blank, it indicates that the user is attending the event.
 
+\* - required parameter.
+
 ### Returns
 This API returns the updated `user` object for the current user in the following format:
 

@@ -12,13 +12,10 @@ An Event object represents an event in the EventFeeler database. These events ca
 ```javascript
 {
     _id : String,                                           // Event's ID in the database
-    event_id : {                                            // original data source's ID for the event
-        type : {
-            orig_id: String,                                // ID in the original event datasource
-            from: String                                    // origin datasource for the event (e.g. Facebook)
-        },
-        unique : true
-    },
+    event_ids : [{                                          // Original datasource IDs for the event
+        orig_id: String,                                    // ID in the original event datasource
+        from: String                                        // origin datasource for the event (e.g. Facebook)
+    }],
     name : String,                                          // name of the event
     description : String,                                   // description of the event
     categories : [String],                                  // list of event categories

@@ -1,17 +1,12 @@
 var mongoose = require('mongoose');
 
-class Events
-{
-    constructor()
-    {
+class Events {
+    constructor() {
         this.schema = new mongoose.Schema({
-            event_id : {                                            // EventFeeler ID for the event
-                type : {
-                    orig_id: String,                                // ID in the original event datasource
-                    from: String                                    // origin datasource for the event (e.g. Facebook)
-                },
-                unique : true
-            },
+            event_ids : [{                                          // Original datasource IDs for the event
+                orig_id: String,                                    // ID in the original event datasource
+                from: String                                        // origin datasource for the event (e.g. Facebook)
+            }],
             name : String,                                          // name of the event
             description : String,                                   // description of the event
             categories : [String],                                  // list of event categories
@@ -31,17 +26,15 @@ class Events
         });
 
         this.schema.index({'place.loc': '2dsphere'});
-
         this.model = mongoose.model('events', this.schema);
     }
 
-    fromFacebook(fbEvent)
-    {
+    fromFacebook(fbEvent) {
         var e = {};
-        e.event_id = {
+        e.event_ids = [{
             orig_id: fbEvent.id,
             from: "Facebook"
-        };
+        }];
 
         e.name = fbEvent.name;
         e.description = fbEvent.description;
@@ -84,10 +77,10 @@ class Events
     fromCalendar(calEvent) {
         var e = {};
 
-        e.event_id = {
+        e.event_ids = [{
             orig_id: calEvent.getFirstPropertyValue('uid'),
             from: 'Calendar'
-        };
+        }];
 
         e.name = calEvent.getFirstPropertyValue('summary');
         e.description = calEvent.getFirstPropertyValue('description');

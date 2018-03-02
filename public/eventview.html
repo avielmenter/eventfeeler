@@ -7,20 +7,72 @@
   <title>Single Event View</title>
       <link rel="stylesheet" href="style.css">
       <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-
+      <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Raleway|Roboto" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+      <script
+        src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"></script>
+      <script src="semantic/dist/semantic.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <style>
 
+.active{
+  font-weight: bold;
+}
+.fas{
+  color: white;
+  text-shadow: 1px 1px 1px #ccc;
+  font-size: 35px;
+}
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #1e70bf;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 18px 16px;
+    text-decoration: none;
+    font-size: 15px;
+    font-family: "Roboto", sans-serif;
+
+
+}
+
+li a:hover {
+    background-color: #111;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
+
 .btn-size{
   width: 100px;
   border-radius: 12px;
-   background-color: grey;
+   background-color: #74b9ff;
     border: none;
     color: white;
-    padding: 16px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -29,8 +81,8 @@
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
     cursor: pointer;
-    font-family: 'Roboto';
-    font-weight: 100;
+    font-family: 'Raleway';
+    font-weight: bold;
 
 }
 
@@ -50,25 +102,25 @@
 
 }
 #hi{
-  font-family: 'Montserrat';
+  font-family: 'Raleway';
   font-size: 40px;
-  background-color: #D8334A;
+  background-color: #1e70bf;
   color: white;
   font-weight: bold;
 }
 #hi2{
-  font-family: 'Montserrat';
+  font-family: 'Raleway';
   font-size: 30px;
   background-color: #313335;
   color: white;
   font-weight: bold;
 }
 #detail{
-    font-family: 'Montserrat';
-    border:1px solid black;
-    border-radius: 5px;
+    font-family: 'Lato';
+    border:2px solid white;
     color: #313335;
-    font-size: 14px;
+    font-weight: 400;
+    font-size: 16px;
 
 
 }
@@ -78,7 +130,15 @@
 </head>
 <body>
 
+  <ul>
 
+    <li><a class="active" href="#home"><img src="calendar.png" width="30"> <br> EVENTFEELER  </img> </a></li>
+    <li><a href="index2.html"><i class="fas fa-home"> </i></a></li>
+    <li><a href="maptest.html"><i class="fas fa-map-marker-alt"></i></a></li>
+    <li><a href="#searchpage"><i class="fas fa-search"></i></a></li>
+    <li><a href="#recommendations"><i class="fas fa-thumbs-up"></i></a></li>
+
+  </ul>
   <div id="root"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
@@ -112,9 +172,9 @@ class EventData extends React.Component {
 
     <center><div id ="detail"> <div id="hi"> {this.state.users.name}</div> < br />
   <font size="4">  <strong>Event Description: </strong> </font><br /> {this.state.users.description} < br /><br />
-  <font size="4">       <strong>   Event Location: </strong> </font><br /> {this.state.users.place && this.state.users.place.name} <br /><br />
-  <font size="4">     <strong>      Event Categories:  </strong> </font><br /> {this.state.users && this.state.users.categories}<br /><br />
-  <font size="4">     <strong>      Event Time & Date </strong>  </font><br /> {this.state.users && this.state.users.event_times&& this.state.users.event_times[0].start_time} figure out how to change to utc<br />
+  <font size="4">       <strong>   Location: </strong> </font><br /> {this.state.users.place && this.state.users.place.name} <br /><br />
+  <font size="4">     <strong>     Categories:  </strong> </font><br /> {this.state.users && this.state.users.categories}<br /><br />
+  <font size="4">     <strong>     Time & Date: </strong>  </font><br /> {this.state.users && this.state.users.event_times&& this.state.users.event_times[0].start_time} figure out how to change to utc<br />
   < br/><br/><div id="hi2"> Comments</div>
 <CommentForm />
      </div></center>
@@ -160,6 +220,7 @@ class CommentForm extends React.Component {
         <label for='comment'>
                 <textarea class="form-control" rows="5" cols ="60" id="comment" input type="text"  value={this.state.value} onChange={this.handleChange} ></textarea>
         </label><br />
+
    <button type="submit"  className="btn btn-size">Submit</button></form> </center>
     );
   }

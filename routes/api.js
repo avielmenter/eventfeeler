@@ -1,4 +1,4 @@
-    var express = require('express');
+var express = require('express');
 
 module.exports = api => {
     var router = express.Router();
@@ -17,7 +17,6 @@ module.exports = api => {
     });
 
     router.get('/user/current', function(req, res, next) {
-        console.log("REQUESTING USER: " + JSON.stringify(req.user));
         res.json(req.user);
     });
 
@@ -35,11 +34,11 @@ module.exports = api => {
     });
 
     router.post('/:objType/:objID?', function(req, res, next) {
-        var path = '../api/' + req.params.objType;
-        var reqAPI = require(path)(api, req.params.objID);
-
         if (!req.user)
             next(new Error("You must be logged in to use the POST APIs."));
+
+        var path = '../api/' + req.params.objType;
+        var reqAPI = require(path)(api, req.params.objID);
 
         reqAPI.post(req)
         .then(result => {

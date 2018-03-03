@@ -96,6 +96,10 @@ var map = new google.maps.Map(document.getElementById('map'), {
   center: new google.maps.LatLng(33.651964, -117.844886),
   mapTypeId: google.maps.MapTypeId.ROADMAP
 });
+var icon = {
+    url: "marker.png", // url
+    scaledSize: new google.maps.Size(50, 50), // size
+};
 var infowindow = new google.maps.InfoWindow();
 var marker, i;
 for (i = 0; i < locations.length; i++) {
@@ -104,7 +108,8 @@ for (i = 0; i < locations.length; i++) {
   if(locations[i].place.loc != null){
   marker = new google.maps.Marker({
     position: new google.maps.LatLng(locations[i].place.loc.coordinates[1], locations[i].place.loc.coordinates[0]),
-    map: map
+    map: map,
+    icon: icon
   })};
   google.maps.event.addListener(marker, 'click', (function(marker, i) {
     return function() {

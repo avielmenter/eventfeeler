@@ -108,7 +108,7 @@ for (i = 0; i < locations.length; i++) {
   })};
   google.maps.event.addListener(marker, 'click', (function(marker, i) {
     return function() {
-      infowindow.setContent("<center><h3><a href="+"eventview.html?eventid="+locations[i]._id+">" +locations[i].name+"</a></h3><br><h4>Location: "+locations[i].place.name +"</h4><br>"+locations[i].description+"</center>");
+      infowindow.setContent("<center>"+'<font face="Raleway">'+"<h3><a href="+"eventview.html?eventid="+locations[i]._id+">" +locations[i].name+"</a></h3><br><h4>Location: "+locations[i].place.name +"</h4><br>"+locations[i].description+"</font></center>");
       infowindow.open(map, marker);
     }
   })(marker, i));

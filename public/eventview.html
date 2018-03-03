@@ -9,12 +9,10 @@
       <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
       <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
       <link href="https://fonts.googleapis.com/css?family=Raleway|Roboto" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
       <script
         src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
         crossorigin="anonymous"></script>
-      <script src="semantic/dist/semantic.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -144,6 +142,7 @@ html, body {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.12.0/axios.min.js"></script>
   <script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
+  <script src="qs.js"></script>
 
 
 <script type="text/babel">
@@ -158,8 +157,10 @@ class EventData extends React.Component {
 
   }
   componentDidMount() {
+    var queries = qs.get();
+    console.log(queries.eventid);
     axios
-      .get('/api/event/5a84ef6afa7e57067317b2cc')
+      .get('/api/event/'+queries.eventid)
       .then(response => {
         this.setState({ users: response.data }, function () {
           console.log(this.state.users);

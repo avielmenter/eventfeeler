@@ -24,10 +24,21 @@ module.exports = api => {
 
     var router = express.Router();
 
-    router.get('/twitter', passport.authenticate('twitter'));
-    router.get('/twitter/return', passport.authenticate('twitter', {failureRedirect: '/login/twitter' }),
-    function(req, res) {
-        res.redirect('/');
+    router.get('/:provider', function(req, res, next) {
+        req.session.loginReturn = req.query.loginReturn;
+        passport.authenticate('twitter')(req, res, next);
+    });
+
+    router.get('/:provider/return', function(req, res, next) {
+        var loginReturn = req.session.loginReturn;
+        if (loginReturn[0] != '/')
+            loginReturn = '/' + loginReturn;
+        delete req.session.loginReturn;
+
+        passport.authenticate(req.params.provider, {
+            successRedirect: loginReturn,
+            failureRedirect: '/login/' + req.params.provider
+        })(req, res, next);
     });
 
     return router;

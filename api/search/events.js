@@ -183,7 +183,8 @@ class eventsAPI {
         if (until - since > 7 * 24 * 60 * 60 * 1000) // greater than 1 week
             throw new Error("You cannot request more than a week's worth of events at a time.");
 
-        await this.ensureDBRecency(since, until);
+        this.ensureDBRecency(since, until).then(); // update DB asynchronusly so we don't wait on the API fetching
+
         var eventsModel = this.api.mongoose.model('events', this.api.schemas.Events.schema);
 
         var mQuery = eventsModel.find({

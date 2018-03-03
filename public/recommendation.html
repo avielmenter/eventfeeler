@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Load External Data in React</title>
+
+
+  <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Raleway|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+<style>
+
+.active{
+  font-weight: bold;
+}
+.fas{
+  color: white;
+  text-shadow: 1px 1px 1px #ccc;
+  font-size: 40px;
+}
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #81CFE0;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 18px 16px;
+    text-decoration: none;
+    font-size: 15px;
+    font-family: "Roboto", sans-serif;
+
+
+}
+
+li a:hover {
+    background-color: grey;
+}
+
+
+</style>
+
+</head>
+
+<body>
+  <ul>
+    <li><a class="active" href="#home"><img src="calendar.png" width="30"> <br> EVENTFEELER  </img> </a></li>
+    <li><a href="index2.html"><i class="fas fa-home"> </i></a></li>
+    <li><a href="maptest.html"><i class="fas fa-map-marker-alt"></i></a></li>
+    <li><a href="#searchpage"><i class="fas fa-search"></i></a></li>
+    <li><a href="#recommendations"><i class="fas fa-thumbs-up"></i></a></li>
+  </ul>
+  <div id="root"></div>
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/axios/0.8.1/axios.min.js'></script>
+<script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
+
+
+<script type="text/babel">
+
+
+var App = React.createClass({
+
+  getInitialState: function() {
+    return {
+      events: []
+    }
+  },
+
+  componentDidMount: function() {
+    // Is there a React-y way to avoid rebinding `this`? fat arrow?
+    var last_week = new Date();
+    last_week.setDate(last_week.getDate() - 7);
+    var th = this;
+    this.serverRequest =
+      axios.get('/api/search/events?since=' + last_week + '&until=' + (new Date()))
+        .then(function(result) {
+          th.setState({
+            events: result.data
+          });
+        })
+  },
+
+  componentWillUnmount: function() {
+    this.serverRequest.abort();
+  },
+
+  render: function() {
+    return (
+      <div>
+        <center><h1>Recommended for you</h1></center>
+        {this.state.events.map(function(event) {
+          var url = 'eventview.html?eventid='+event._id;
+          console.log(event.event_times.start_time)
+          return (
+            <div key={event.url} className="event">
+              <a href={url}>
+                {event.name} |
+                {event.place.name} | Time: {event.event_times[0].start_time} | Date: {event.event_times[0].start_time}
+              </a>
+            </div>
+          );
+        })}
+      </div>
+    )
+  }
+});
+
+var last_week = new Date();
+last_week.setDate(last_week.getDate() - 7);
+var url = '/api/search/events?since=' + last_week + '&until=' + (new Date());
+console.log(url);
+
+React.render(<App/>, document.querySelector("#root"));
+</script>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,900);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,900);
+
+
+html,body {
+  font-family: 'Lato', sans-serif;
+  height: 100%;
+  margin: 0px;
+
+}
+h1 {
+  font-weight: 900;
+  font-size: 60px;
+  color:white;
+  background-color:  #81CFE0;
+  margin: 0px;
+  border: 2px solid white
+
+}
+
+.event a {
+  display: block;
+  padding: 10px;
+  border: 1px solid #81CFE0;
+  border-radius: 25px;
+  margin: 0 0 10px 0;
+  text-decoration: none;
+  color: black;
+}
+.event a:hover {
+  background: #eee;
+}
+.event a span {
+  margin: 0 2px;
+}
+.event a span:first-child {
+  font-weight: 900;
+}

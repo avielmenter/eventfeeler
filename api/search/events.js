@@ -1,4 +1,5 @@
 const escapeStringRegexp = require('escape-string-regexp');
+const CURRENT_QUARTER = '2018-03';
 
 class eventsAPI {
     constructor(setAPI, setQuery) {
@@ -7,7 +8,20 @@ class eventsAPI {
     }
 
     async ensureDBRecency(since, until) {
-        var etsModel = this.api.mongoose.model('events_timespans', this.api.schemas.EventsTimespans.schema);
+        var existingClasses = await this.api.schemas.Events.model.find({ 'event_ids.from': 'WebSOC ' + CURRENT_QUARTER });
+        if (existingClasses !== undefined && existingClasses !== null && existingClasses.length > 0) {
+            console.log("Classes for this quarter already in database.");
+        } else {
+            console.log("Fetching classes from WebSOC...");
+            var webSocAPI = require('../../data/webSOC.js')(this.api);
+            var classes = await webSocAPI.get();
+
+            console.log("Found " + classes.length + " classes.")
+            await webSocAPI.save(classes);
+            console.log("Classes saved.");
+        }
+
+        var etsModel = this.api.schemas.EventsTimespans.model;
 
         var encompassing = await etsModel.findOne({ // is this timespan already filled with events?
             start: {$lte: since},
@@ -59,10 +73,10 @@ class eventsAPI {
         }
         console.log("Events merged.");
 
-        var ts = new etsModel({    // timespan for events we've just saved
-            start: since,
-            end: until
-        });
+        var ts = {                       // timespan for events we've just saved
+            start: new Date(since),
+            end: new Date(until)
+        };
 
         var startOverlap = await etsModel.findOne({
             start: {$lte: ts.start},
@@ -79,14 +93,12 @@ class eventsAPI {
         if (endOverlap !== null)
             ts.end = endOverlap.end;
 
-        ts.save((err) => {
-            if (err)
-                throw err;
-        });
+        var savedTS = await etsModel.create(ts);
 
         await etsModel.find({ // remove timespans encompassed in this one
-            start: {$gte: ts.start},
-            end: {$lte: ts.end}
+            start:  {$gte: ts.start},
+            end:    {$lte: ts.end},
+            _id:    {$ne: savedTS._id}
         }).remove();
     }
 
@@ -183,7 +195,7 @@ class eventsAPI {
         if (until - since > 7 * 24 * 60 * 60 * 1000) // greater than 1 week
             throw new Error("You cannot request more than a week's worth of events at a time.");
 
-        this.ensureDBRecency(since, until).then(); // update DB asynchronusly so we don't wait on the API fetching
+        this.ensureDBRecency(since, until).then(); // update DB asynchronously so we don't wait on the API fetching
 
         var eventsModel = this.api.mongoose.model('events', this.api.schemas.Events.schema);
 
@@ -191,14 +203,15 @@ class eventsAPI {
             event_times: { $elemMatch : {
                 start_time: {$gte: since},
                 end_time: {$lte: until}
-            }}
+            }},
+            $or: [{'event_ids.from': 'Facebook'}, {'event_ids.from': 'Calendar'}] // no classes
         });
 
         if (this.query.nearLat && this.query.nearLong && this.query.distance) {
             mQuery.where('place.loc').near({
                 center: [this.query.nearLong, this.query.nearLat],
                 spherical: true,
-                maxDistance: this.query.distance / 111120.0 // meters to degrees(???)
+                maxDistance: this.query.distance / 111120.0 // meters to degrees
             });
         }
 

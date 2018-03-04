@@ -24,20 +24,18 @@ class commentsAPI {
         tweets.lat = ev.place.loc.coordinates[1];
         tweets.distance = 30;
 
-        var allTimesPassed = true;
-
         for (let time of ev.event_times) { // adds half an hour to catch pre and post event tweets
             tweets.since = dbComment ? moment(dbComment.created_at) : moment(time.start_time).add(-30, 'minute');
             tweets.until = time.end_time ? moment(time.end_time).add(30, 'minute') : moment(time.start_time).clone().add(3, 'hour');
 
+            if (time.comments_fetched)
+                continue;
+            else if (moment(newDate()) >= tweets.until)
+                eventModel.findByIdAndUpdate(ev._id, { comments_fetched: true }).then();
+
             if (moment(new Date()) >= tweets.since)
                 twitterComments = twitterComments.concat(await tweets.get());
-            else
-                allTimesPassed = false;
         }
-
-        if (allTimesPassed)
-            eventModel.findByIdAndUpdate(ev._id, { comments_fetched: true }).then(doc => { });
 
         await tweets.save(twitterComments, ev._id);
     }
@@ -54,8 +52,7 @@ class commentsAPI {
         if (!ev)
             throw new Error("Invalid ID specified.");
 
-        if (!ev.comments_fetched)
-            await this.ensureDBRecency(eventModel, ev);
+        this.ensureDBRecency(eventModel, ev).then(); // update DB asynchronously
 
         var commentsModel = this.api.mongoose.model('Comment', this.api.schemas.Comments.schema);
         var comments = await commentsModel.find({ event_id: ev._id });

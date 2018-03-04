@@ -29,9 +29,9 @@ An Event object represents an event in the EventFeeler database. These events ca
     event_times: [{                                         // list of times the event takes place
         start_time: Date,                                   // time the event starts
         end_time: Date,                                     // time the event ends
-        ticket_uri : String                                 // url to buy a ticket for this event time
-    }],
-    comments_fetched : Boolean                              // are this event's comments in the DB?
+        ticket_uri : String,                                // url to buy a ticket for this event time
+        comments_fetched : Boolean                          // are this event time's comments in the DB?
+    }]
 }
 ```
 

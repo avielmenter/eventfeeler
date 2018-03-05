@@ -1,6 +1,16 @@
 var mongoose = require('mongoose');
 var moment = require('moment');
 
+const WEBSOC_LOCATIONS = {
+    'BS3 1200': [-117.845724, 33.645374],
+    'EH 1200': [-117.841018, 33.643755],
+    'ELH 100': [-117.840655, 33.644498],
+    'HSLH 100A': [-117.844664, 33.645573],
+    'PCB 1100': [-117.842691, 33.644471],
+    'PSLH 100': [-117.843946, 33.643401],
+    'SSLH 100': [-117.839758, 33.647211]
+};
+
 class Events {
     constructor() {
         this.schema = new mongoose.Schema({
@@ -142,6 +152,18 @@ class Events {
 
         e.name = name;
 
+        var locCoords = WEBSOC_LOCATIONS[c.place];
+        if (!locCoords)
+            locCoords = [0, 0];
+
+        e.place = {
+            name: c.place,
+            loc: {
+                type: 'Point',
+                coordinates: locCoords
+            }
+        };
+
         e.event_times = []; // add event times
 
         var classDays = [false, false, false, false, false, false, false]; // Su M Tu W Th F S
@@ -164,7 +186,7 @@ class Events {
                 continue;
 
             var todayStr = today.format('YYYY-MM-DD');
-            
+
             e.event_times[e.event_times.length] = {
                 start_time: moment(todayStr + " " + classTimes.start_time, 'YYYY-MM-DD hh:mmA').toDate(),
                 end_time: moment(todayStr + " " + classTimes.end_time, 'YYYY-MM-DD hh:mmA').toDate(),

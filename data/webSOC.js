@@ -65,7 +65,7 @@ class webSOC {
                 switch (i) {
                     case 2: c.sec       = stripSpaces($(td).text()); break;
                     case 5: c.time      = stripSpaces($(td).text()); break;
-                    case 6: c.place     = stripSpaces($(td).text().substring(0, Math.min(3, $(td).text().length)).replace('/', ' ').trim()); break;
+                    case 6: c.place     = stripSpaces($(td).text()); break;
                     case 8: c.enrolled  = stripSpaces($(td).text()); break;
                 }
             });
@@ -73,38 +73,7 @@ class webSOC {
             if (isLecture)
                 classes.push(c);
         });
-        /*
-        $('.CourseTitle').each((i, elem) => {   // for each course
-            var className = stripSpaces($(elem).text().replace('(Prerequisites)', ''));
-            if (!$(elem) || !$(elem).parent() || !$(elem).parent().parent())
-                return true;
-
-            var table = $(elem).parent().parent();
-
-            $('tr:not([class!=""])', table).each((j, tr) => {   // for each lecture for the course
-                var isLecture = false;
-                var c = { name: className, term: term };
-
-                $('td', tr).each((i, td) => {
-                    if (i == 1)
-                        if (!$(td).text().match(/\s*Lec\s* /i))
-                            return false;
-                        else
-                            isLecture = true;
-
-                    switch (i) {
-                        case 2: c.sec       = stripSpaces($(td).text()); break;
-                        case 5: c.time      = stripSpaces($(td).text()); break;
-                        case 6: c.place     = stripSpaces($(td).text().substring(0, Math.min(3, $(td).text().length)).replace('/', ' ').trim()); break;
-                        case 8: c.enrolled  = stripSpaces($(td).text()); break;
-                    }
-                });
-
-                if (isLecture)
-                    classes.push(c);
-            })
-        });//*/
-
+        
         return classes;
     }
 

@@ -24,7 +24,8 @@ class fbEvents
         if (this.distance !== undefined)
             url += "&" + this.distance;
 
-        url += "&fields=name,events.order(" + (this.sort_descending ? "reverse_" : "") + "chronological)"
+        url += "&fields=name,events.fields(id,name,description,place,start_time,end_time,category,event_times)";
+        url += ".order(" + (this.sort_descending ? "reverse_" : "") + "chronological)"
 
         if (this.since !== undefined)
             url += ".since(" + Date.parse(this.since) / 1000 + ")";

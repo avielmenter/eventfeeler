@@ -123,8 +123,13 @@ class eventsAPI {
             return events[0];
 
         var event_times = [];
+        var categories = [];
 
         for (let e of events) {
+            for (let c of e.categories)
+                if (!(c in categories))
+                    categories.push(c);
+
             for (let et1 of e.event_times) {    // This is O(n^2) when it could be O(n log n), but n is tiny, so w/e
                 var anyTimesMatch = false;
 
@@ -153,7 +158,8 @@ class eventsAPI {
             name: events.filter(e => e.name)[0].name,
             description: events.filter(e => e.description)[0].description,
             place: events.filter(e => e.place.loc[0] != 0 && e.place.loc[1] != 0)[0].place,
-            event_times: event_times
+            event_times: event_times,
+            categories: categories
         };
 
         merged.event_ids = [];

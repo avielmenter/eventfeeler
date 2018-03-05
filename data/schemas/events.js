@@ -40,6 +40,19 @@ class Events {
         this.model = mongoose.model('events', this.schema);
     }
 
+    sanitizeCategories(categories) {
+        if (!categories)
+            return categories;
+
+        for (var i = 0; i < categories.length; i++) {
+            categories[i] = categories[i].replace(/\s+/i, ' ').trim().toLowerCase();
+        }
+
+        categories = categories.filter(c => c.trim() != '');
+
+        return categories;
+    }
+
     fromFacebook(fbEvent) {
         var e = {};
         e.event_ids = [{
@@ -58,6 +71,11 @@ class Events {
                     fbEvent.place.location.latitude
             ]}
         };
+
+        if (fbEvent.category) {
+            var c = fbEvent.category.replace('_', ' ').replace('EVENT', '').split(',');
+            e.categories = this.sanitizeCategories(c);
+        }
 
         e.event_times = [];
 
@@ -100,6 +118,11 @@ class Events {
             locCoords = locCoords.reverse();
         else
             locCoords = [0, 0];
+
+        var catsStr = calEvent.getFirstPropertyValue('categories');
+        catsStr = catsStr.replace('(Other)', '').replace('/', ',');
+
+        e.categories = this.sanitizeCategories(catsStr.split(','));
 
         e.place = {
             name: calEvent.getFirstPropertyValue('location'),

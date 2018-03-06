@@ -40,7 +40,7 @@ This API returns modified [`event`](https://github.com/avielmenter/eventfeeler/t
 
 EventFeeler makes these recommendations based on the categories of events that the user has already attended. It then trains a Naive Bayes classifier to determine the probability that a user will like an event given the events' categories.
 
-This API returns returns of events that it thinks the user would most likely to enjoy in the specified period of time, sorted such that the event with the highest probability of being liked is first in the list.
+This API returns a list of events that it thinks the user would be most likely to enjoy in the specified period of time, sorted such that the event with the highest probability of being liked is first in the list.
 
 ### Parameters
 
@@ -50,4 +50,4 @@ This API returns returns of events that it thinks the user would most likely to 
 ### Returns
 This API returns a list of modified [`event`](https://github.com/avielmenter/eventfeeler/tree/master/data#event) objects.
 
-Each [`event`](https://github.com/avielmenter/eventfeeler/tree/master/data#event) is modified by the addition of a single property, `probability`. This property represents the probability that EventFeeler has estimated the user will like the event. This number should probably not be shown to users directly; because a user is only like to attend a small number of events in a given category, the `probability` computed will likely be low in absolute terms.
+Each [`event`](https://github.com/avielmenter/eventfeeler/tree/master/data#event) is modified by the addition of a single property, `probability`. This property represents the estimated probability the user will like the event. This number should probably not be shown to users directly. As a user will usually only attend a small number of events in a given category, the `probability` computed will likely be low in absolute terms.

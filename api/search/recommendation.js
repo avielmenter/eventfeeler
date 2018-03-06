@@ -33,11 +33,8 @@ class recommendationAPI {
         if (!attended || attended.length < 1)
             return [];
 
-        var totalAttended = attended.length;
-
         var pAttendAndCat = {};     // probability that the user attended this event and the event is in the given category
         var pCat = {};              // probability an event is in this category
-        var pAttendGivenCat = {};   // the value we want to calculate: probability of attendance given a category
 
         var catCountPromises = [];
 
@@ -55,22 +52,9 @@ class recommendationAPI {
         if (!pAttendAndCat || Object.keys(pAttendAndCat).length < 1)
             return [];
 
-        var totalEvents = await this.api.schemas.Events.model.count({
-            $or: [{ 'event_ids.from': 'Calendar' }, { 'event_ids.from': 'Facebook' }]
-        });
-
-        for (let k of Object.keys(pAttendAndCat))
-            pAttendAndCat[k] = pAttendAndCat[k] / totalEvents;
-
-        var pAttend = totalAttended / totalEvents;
-
         var catCountResults = await Promise.all(catCountPromises);
-        for (let r of catCountResults) {
-            pCat[r.key] = r.result / totalEvents;
-        }
-
-        for (let k of Object.keys(pCat))
-            pAttendGivenCat[k] = pAttendAndCat[k] / pCat[k]; // Bayes' rule: p(a|b) = p(a AND b) / p(b)
+        for (let r of catCountResults)
+            pCat[r.key] = r.result;
 
         var upcomingEvents = await this.api.schemas.Events.model.find({ // find non-class events in the next week with category the user's attended
             $or: [{ 'event_ids.from': 'Calendar' }, { 'event_ids.from': 'Facebook' }],
@@ -89,14 +73,20 @@ class recommendationAPI {
             r.probability = 1.0;
 
             for (let c of r.categories) {
-                if (c in pCat)
-                    r.probability *= pAttendGivenCat[c];
+                if (c in pCat) {
+                    r.probability *= pAttendAndCat[c] / pCat[c]; // Bayes' rule: p(a|b) = p(a AND b) / p(b)
+                } else {
+                    r.probability = 0;
+                    break;
+                }
             }
 
             recommended.push(r);
         }
 
-        return recommended.sort((l, r) => r.probability - l.probability).slice(0, limit);
+        return recommended.sort((l, r) => r.probability - l.probability)
+                            .filter(r => r.probability > 0)
+                            .slice(0, limit);
     }
 }
 

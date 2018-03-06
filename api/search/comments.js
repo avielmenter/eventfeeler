@@ -58,7 +58,7 @@ class commentsAPI {
         if (!ev)
             throw new Error("Invalid ID specified.");
 
-        this.ensureDBRecency(eventModel, ev).then(); // update DB asynchronously
+        await this.ensureDBRecency(eventModel, ev);
 
         var commentsModel = this.api.mongoose.model('Comment', this.api.schemas.Comments.schema);
         var comments = await commentsModel.find({ event_id: ev._id });

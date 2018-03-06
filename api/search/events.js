@@ -1,5 +1,6 @@
 const escapeStringRegexp = require('escape-string-regexp');
 const CURRENT_QUARTER = '2018-03';
+const WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000;
 
 class eventsAPI {
     constructor(setAPI, setQuery) {
@@ -190,18 +191,18 @@ class eventsAPI {
     }
 
     async get() {
-        if (!this.query.since || !this.query.until)
-            throw new Error("You must specify a start and end date for your query.");
+        if ((!this.query.since || !this.query.until) && !this.query.name)
+            throw new Error("You must specify a start and end date, or an event name for your query.");
 
         this.api.connect();
 
         var since = new Date(this.query.since);
         var until = new Date(this.query.until);
 
-        if (until - since > 7 * 24 * 60 * 60 * 1000) // greater than 1 week
+        if (!this.query.name && until - since > WEEK_IN_MS)
             throw new Error("You cannot request more than a week's worth of events at a time.");
-
-        this.ensureDBRecency(since, until).then(); // update DB asynchronously so we don't wait on the API fetching
+        else if (until - since <= WEEK_IN_MS)
+            this.ensureDBRecency(since, until).then(); // update DB asynchronously so we don't wait on the API fetching
 
         var eventsModel = this.api.mongoose.model('events', this.api.schemas.Events.schema);
 
@@ -209,14 +210,18 @@ class eventsAPI {
         if (this.query.categories)
             categories = this.query.categories.split(',').map(c => c.trim().toLowerCase());
 
-        var mQuery = {
-            event_times: { $elemMatch : {
+        var mQuery = {};
+
+        if (this.query.since && this.query.until && until - since <= WEEK_IN_MS)
+            mQuery.event_times = { $elemMatch : {
                 start_time: {$gte: since},
                 end_time: {$lte: until}
-            }},
-            $or: [{'event_ids.from': 'Facebook'}, {'event_ids.from': 'Calendar'}] // no classes
-        };
+            }};
 
+        if (!this.query.classes)
+            mQuery.$or = [{'event_ids.from': 'Facebook'}, {'event_ids.from': 'Calendar'}] // no classes
+        if (this.query.name)
+            mQuery.name = new RegExp('.*' + this.query.name + '.*', 'i')
         if (categories.length > 0)
             mQuery.categories = { $all: categories };
 

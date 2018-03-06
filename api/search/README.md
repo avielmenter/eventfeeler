@@ -9,12 +9,13 @@ This API returns [`event`](https://github.com/avielmenter/eventfeeler/tree/maste
 ### Parameters
 - `since`\*: retrieve events that have started after this time
 - `until`\*: retrieve events that have started before this time
+- `name`\*: retrieve events containing the value for this parameter in their names
 - `nearLat`: retrieve events near this latitude
 - `nearLong`: retrieve events near this Longitude
 - `distance`: retrieve events within this distance (in meters) of the specified location
 - `categories`: retrieve events belong to the specified comma-separated list of categories
 
-\* - required parameter.
+\* - required parameter. If the `since` and `until` parameters are not specified, then the `name` parameter must be present.
 
 The `since` and `until` parameters must be within a week of each other.
 

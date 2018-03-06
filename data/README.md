@@ -55,7 +55,16 @@ A User object represents a social media user in the EventFeeler DataBase. EventF
         display_name : String,  // User's display name on Twitter
         image_url : String      // URL of the user's profile image
     },
-    attending : [String],       // list of IDs of events the user is attending
+    facebook : {
+        facebook_id : {
+            type: String,
+            trim: true,
+            unique: true,
+            sparse: true
+        },
+        display_name : String
+    },
+    attending : [String]        // list of IDs of events the user is attending
 }
 ```
 

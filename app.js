@@ -43,7 +43,7 @@ app.use(session({
 passport.serializeUser(function(user, cb) {
     api.connect();
 
-    api.schemas.Users.saveFromTwitter(user)
+    api.schemas.Users.save(user)
         .then(u => cb(null, u._id))
         .catch(err => cb(err, null));
 });

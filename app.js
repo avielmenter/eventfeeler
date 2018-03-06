@@ -43,9 +43,9 @@ app.use(session({
 passport.serializeUser(function(user, cb) {
     api.connect();
 
-    api.schemas.Users.save(user)
-        .then(u => { cb(null, u._id); })
-        .catch(err => { cb(err, null); });
+    api.schemas.Users.saveFromTwitter(user)
+        .then(u => cb(null, u._id))
+        .catch(err => cb(err, null));
 });
 
 passport.deserializeUser(function(id, cb) {

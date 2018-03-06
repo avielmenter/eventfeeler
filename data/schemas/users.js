@@ -56,7 +56,7 @@ class Users {
 
         return await this.model.findOneAndUpdate(
             { 'twitter.twitter_id': profile.id },
-            u,
+            { $set: { twitter: u.twitter } },
             { upsert: true, new: true }
         );
     }

@@ -33,3 +33,18 @@ This API returns [`comment`](https://github.com/avielmenter/eventfeeler/tree/mas
 
 ### Returns
 This API returns a list of [`comment`](https://github.com/avielmenter/eventfeeler/tree/master/data#comment) objects.
+
+## GET /search/recommendation
+
+This API returns modified [`event`](https://github.com/avielmenter/eventfeeler/tree/master/data#event) objects that EventFeeler thinks the currently logged in user will enjoy.
+
+EventFeeler makes these recommendations based on the categories of events that the user has already attended. It then trains a Naive Bayes' classifier to determine the probability that a user will like an event given the events' categories. This API returns 10 events that it thinks the user would most likely to enjoy in the specified period of time.
+
+### Parameters
+
+- `days_out`: the API will return events from the current date up until this number of days in the future. If left blank, this parameter defaults to 7 days.
+
+### Returns
+This API returns a list of modified [`event`](https://github.com/avielmenter/eventfeeler/tree/master/data#event) objects.
+
+Each [`event`](https://github.com/avielmenter/eventfeeler/tree/master/data#event) is modified by the addition of a single property, `probability`. This property represents the probability that EventFeeler has estimated the user will like the event. This number should probably not be shown to users directly; because a user is only like to attend a small number of events in a given category, the `probability` computed will likely be low in absolute terms.

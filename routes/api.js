@@ -3,6 +3,22 @@ var express = require('express');
 module.exports = api => {
     var router = express.Router();
 
+    router.get('/search/recommendation', function(req, res, next) {
+        if (!req.user)
+            next(new Error("You must be logged in to use the recommendation API."));
+
+        var path = '../api/search/recommendation';
+        var recAPI = require(path)(api, req.query);
+
+        recAPI.get(req.user)
+        .then(result => {
+            res.json(result);
+        })
+        .catch(err => {
+            next(err);
+        })
+    });
+
     router.get('/search/:apiPath', function(req, res, next) {
         var path = '../api/search/' + req.params.apiPath;
         var reqAPI = require(path)(api, req.query);

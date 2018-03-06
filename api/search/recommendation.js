@@ -24,6 +24,7 @@ class recommendationAPI {
         this.api.connect();
 
         var daysOut = this.query.days_out ? this.query.days_out : 7;
+        var limit = this.query.limit ? Math.abs(this.query.limit) : 10; // Math.abs to prevent unbounded list sizes
 
         var attended = await this.api.schemas.Events.model.find({
             _id: { $in: user.attending }
@@ -95,7 +96,7 @@ class recommendationAPI {
             recommended.push(r);
         }
 
-        return recommended.sort((l, r) => r.probability - l.probability).slice(0, 10);
+        return recommended.sort((l, r) => r.probability - l.probability).slice(0, limit);
     }
 }
 

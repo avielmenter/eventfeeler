@@ -1,20 +1,21 @@
 var moment = require('moment');
 
-async function keyPromise(k, p) {
-    var r = await p;
-    return { key: k, result: r };
-}
-
-function removeDups(c) {
-    return c.sort().filter(function(item, pos, ary) {
-        return !pos || item != ary[pos - 1];
-    })
-}
 
 class recommendationAPI {
     constructor(setAPI, setQuery) {
         this.api = setAPI;
         this.query = setQuery;
+    }
+
+    static async keyPromise(k, p) {
+        var r = await p;
+        return { key: k, result: r };
+    }
+
+    static removeDups(c) {
+        return c.sort().filter(function(item, pos, ary) {
+            return !pos || item != ary[pos - 1];
+        })
     }
 
     async get(user) {   // writes a naive bayes classifier to find categories of events this user most likely enjoys
@@ -39,10 +40,10 @@ class recommendationAPI {
         var catCountPromises = [];
 
         for (let a of attended) {
-            for (let c of removeDups(a.categories)) {
+            for (let c of recommendationAPI.removeDups(a.categories)) {
                 if (!(c in pAttendAndCat)) {
                     pAttendAndCat[c] = 1.0;
-                    catCountPromises.push(keyPromise(c, this.api.schemas.Events.model.count({ categories: c })));
+                    catCountPromises.push(recommendationAPI.keyPromise(c, this.api.schemas.Events.model.count({ categories: c })));
                 } else {
                     pAttendAndCat[c] += 1.0;
                 }
@@ -62,7 +63,7 @@ class recommendationAPI {
                 $lte: moment(new Date()).add(daysOut, 'days').toDate(),
                 $gte: moment(new Date()).toDate()
             } } },
-            categories: { $elemMatch: { $in: Object.keys(pCat) } }
+            categories: { $in: Object.keys(pCat)  }
         });
 
         var recommended = [];
@@ -72,14 +73,8 @@ class recommendationAPI {
             r._id = u._id;
             r.probability = 1.0;
 
-            for (let c of r.categories) {
-                if (c in pCat) {
-                    r.probability *= pAttendAndCat[c] / pCat[c]; // Bayes' rule: p(a|b) = p(a AND b) / p(b)
-                } else {
-                    r.probability = 0;
-                    break;
-                }
-            }
+            for (let c of r.categories)
+                r.probability *= pAttendAndCat[c] / pCat[c]; // Bayes' rule: p(a|b) = p(a AND b) / p(b)
 
             recommended.push(r);
         }

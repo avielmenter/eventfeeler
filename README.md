@@ -2,7 +2,7 @@
 Project for UCI's CS 125 Class.
 
 # About
-This section coming soon.
+EventFeeler is an application that helps users locate events on the UCI Campus. Users can search events by time, location, and category, and leave comments on those events. EventFeeler also recommends events to users based on the user's history of event attendance.
 
 # Setup
 ## Prerequisites

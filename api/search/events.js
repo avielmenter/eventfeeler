@@ -205,23 +205,32 @@ class eventsAPI {
 
         var eventsModel = this.api.mongoose.model('events', this.api.schemas.Events.schema);
 
-        var mQuery = eventsModel.find({
+        var categories = [];
+        if (this.query.categories)
+            categories = this.query.categories.split(',').map(c => c.trim().toLowerCase());
+
+        var mQuery = {
             event_times: { $elemMatch : {
                 start_time: {$gte: since},
                 end_time: {$lte: until}
             }},
             $or: [{'event_ids.from': 'Facebook'}, {'event_ids.from': 'Calendar'}] // no classes
-        });
+        };
+
+        if (categories.length > 0)
+            mQuery.categories = { $all: categories };
+
+        var dbQuery = eventsModel.find(mQuery);
 
         if (this.query.nearLat && this.query.nearLong && this.query.distance) {
-            mQuery.where('place.loc').near({
+            dbQuery.where('place.loc').near({
                 center: [this.query.nearLong, this.query.nearLat],
                 spherical: true,
                 maxDistance: this.query.distance / 111120.0 // meters to degrees
             });
         }
 
-        var events = await mQuery;
+        var events = await dbQuery;
         console.log("Returning " + events.length + " events.");
         return events;
     }

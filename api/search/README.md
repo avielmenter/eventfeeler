@@ -11,7 +11,8 @@ This API returns [`event`](https://github.com/avielmenter/eventfeeler/tree/maste
 - `until`\*: retrieve events that have started before this time
 - `nearLat`: retrieve events near this latitude
 - `nearLong`: retrieve events near this Longitude
-- `distance`: retrieve events within this distance (in meters) of  the specified location
+- `distance`: retrieve events within this distance (in meters) of the specified location
+- `categories`: retrieve events belong to the specified comma-separated list of categories
 
 \* - required parameter.
 

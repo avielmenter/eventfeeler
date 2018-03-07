@@ -38,6 +38,7 @@ class Events {
 
         this.schema.index({'place.loc': '2dsphere'});
         this.model = mongoose.model('events', this.schema);
+        this.model.on('index', err => { if (err) console.log("ERROR BUILDING INDICES: " + err) });
     }
 
     sanitizeCategories(categories) {

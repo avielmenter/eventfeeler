@@ -229,7 +229,10 @@ class eventsAPI {
 
         if (this.query.nearLat && this.query.nearLong && this.query.distance) {
             dbQuery.where('place.loc').near({
-                center: [this.query.nearLong, this.query.nearLat],
+                center: {
+                    type: 'Point',
+                    coordinates: [this.query.nearLong, this.query.nearLat]
+                },
                 spherical: true,
                 maxDistance: this.query.distance / 111120.0 // meters to degrees
             });

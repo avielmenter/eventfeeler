@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.js"></script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3PdybtlrFDSChwdlL1PoVQmCkJaHMXZw&callback=initMap">
+  </script>
+  <style>
+  body{
+    font-family: "Raleway", Arial;
+    font-size: 20px;
+  }
+
+  input[type=text] {
+    width: 60%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #81CFE0;
+    border-radius: 4px;
+}
+
+  h1 {
+    font-weight: 100px;
+    font-size: 60px;
+    color:white;
+    background-color:  #81CFE0;
+    margin: 0px;
+    border: 2px solid white
+
+  }
+  .btn-size{
+    width: 100px;
+    border-radius: 12px;
+     background-color: #81CFE0;
+      border: none;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      -webkit-transition-duration: 0.4s; /* Safari */
+      transition-duration: 0.4s;
+      cursor: pointer;
+      font-family: 'Raleway';
+      font-weight: bold;
+
+  }
+
+  .btn-size:hover {
+      background-color: #555555;
+      color: white;
+      font-weight: 100;
+  }
+</style>
+
+
+  </head>
+<body>
+  <script>
+
+
+  var submitOK = "true";
+
+  function check(){
+   submitOK = "true";
+
+    //Both the name and date fields cannot be null!
+    if(document.getElementById("name").value==""||document.getElementById("name").value==null){
+      if((document.getElementById("before").value==""||document.getElementById("before").value==null)||
+      (document.getElementById("after").value==""||document.getElementById("after").value==null)){
+        submitOK="false";
+        alert("Either both the date fields must be completely filled or the 'Find' field must be filled. ")
+      }}
+
+          if((document.getElementById("before").value!=""&&document.getElementById("before").value!=null)){
+             if((document.getElementById("after").value==""||document.getElementById("after").value==null)){
+               alert("Both before and after fields must be entered.")
+             }
+              var before = document.getElementById("before").value;
+              var beforeValid = moment(before, 'YYYY-MM-DD',true).isValid();
+              if(beforeValid == false){
+                submitOK="false";
+                alert("Response for 'Before' date field is not valid");
+              }
+          }
+
+          if((document.getElementById("after").value!=""&&document.getElementById("after").value!=null)){
+            if((document.getElementById("before").value==""||document.getElementById("before").value==null)){
+              submitOK="false";
+              alert("Both before and after fields must be entered.")
+            }
+              var after = document.getElementById("after").value;
+              var afterValid = moment(after, 'YYYY-MM-DD',true).isValid();
+              if(afterValid == false){
+                submitOK="false";
+                alert("Response for 'After' date field is not valid");
+              }
+          }
+    }
+
+
+
+    // if(document.getElementById("name").value==""||document.getElementById("name").value==null){
+    //   alert("'Find' field must be entered")
+    //   return false;
+    // }
+    // if(document.getElementById("before").value==""||document.getElementById("before").value==null){
+    //   alert("All date fields must be entered.")
+    //   return false;
+    // }
+    // if(document.getElementById("after").value==""||document.getElementById("after").value==null){
+    //   alert("All date fields must be entered.")
+    //   return false;
+    // }
+  //
+  //   var before = document.getElementById("before").value;
+  //   var after = document.getElementById("after").value;
+  //   var beforeValid = moment(before, 'YYYY-MM-DD',true).isValid();
+  //   var afterValid = moment(after, 'YYYY-MM-DD',true).isValid();
+  //   console.log(beforeValid);
+  //   console.log(afterValid);
+  //
+  // }
+
+
+
+
+
+  var lat = '';
+  var long ='';
+
+  function myFunction(){
+    check(); // checks to make sure at least dates or name is filled
+
+    url = "searchresults.html?";
+
+
+
+
+
+
+    // if only name is filled
+    if((document.getElementById("before").value==""||document.getElementById("before").value==null)){
+      if((document.getElementById("after").value==""||document.getElementById("after").value==null)){
+        if((document.getElementById("name").value !="" && document.getElementById("name").value!=null)){
+          url = "searchresults.html?name="+document.getElementById("name").value;
+          if((document.getElementById("distance").value!=""&&document.getElementById("distance").value!=null)){
+            url+= "&distance="+document.getElementById("distance").value;
+          }
+        }}}
+
+    // if  both dates and name are filled
+    if((document.getElementById("before").value!=""&&document.getElementById("before").value!=null)){
+      if((document.getElementById("after").value!=""&&document.getElementById("after").value!=null)){
+        if((document.getElementById("name").value !="" && document.getElementById("name").value!=null)){
+          url = "searchresults.html?since="+document.getElementById("before").value+"&until="+document.getElementById("after").value+"&name="+document.getElementById("name").value;
+          if((document.getElementById("distance").value!=""&&document.getElementById("distance").value!=null)){
+            url+= "&distance="+document.getElementById("distance").value;
+          }
+        }}}
+
+   // if only dates are filled
+   if((document.getElementById("before").value!=""&&document.getElementById("before").value!=null)){
+     if((document.getElementById("after").value!=""&&document.getElementById("after").value!=null)){
+       if((document.getElementById("name").value =="" || document.getElementById("name").value==null)){
+         url = "searchresults.html?since="+document.getElementById("before").value+"&until="+document.getElementById("after").value;
+         if((document.getElementById("distance").value!=""&&document.getElementById("distance").value!=null)){
+           url+= "&distance="+document.getElementById("distance").value;
+         }
+       }}}
+
+   //
+    if((document.getElementById("address").value!=""&&document.getElementById("address").value!=null)){
+      var address = document.getElementById('address').value;
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        lat = results[0].geometry.location.lat();
+         long = results[0].geometry.location.lng();
+        }
+        url+="&nearLat="+lat+"&nearLong="+long;
+        console.log(url);
+        if(submitOK=="true"){
+          location.href = url;
+        }
+      });
+    }
+
+    console.log(url);
+    if(submitOK=="true"){
+      location.href = url;
+    }
+
+}
+
+
+  </script>
+<center>
+<h1>SEARCH FOR AN EVENT</h1><br>
+
+Search for events before this date<br>
+<font size="1"> * Required if 'Find' field is not entered. There must be at least 7 days between the after and before date.</font>
+<br>
+<input type="text" id="before" name = "before" placeholder="YYYY-MM-DD"><br>
+Search for events after this date<br>
+<font size="1"> * Required if 'Find' field is not entered. There must be at least 7 days between the before and after date.</font>
+<br>
+<input type="text" id="after" name = "after" placeholder="YYYY-MM-DD"><br>
+Find<br>
+<font size="1"> * Required if date fields are not entered.</font>
+<br>
+<input type="text" id="name" name = "name" placeholder="basketball, concert, art, exhibit, food"><br>
+
+Categories<br>
+<input type="text" id="category" name="category" placeholder="humanities, music"><br>
+Near<br>
+<input type="text" id="address" name ="address" placeholder="UCI Student Center"><br>
+Distance (in meters)<br>
+<input type="text" id="distance" name="distance" placeholder="50"><br>
+<button type="button" id="submit" class="btn btn-size" onclick="myFunction()" >Submit</button>
+</center>
+</body>
+</html>

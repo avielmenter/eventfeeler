@@ -353,7 +353,6 @@ class CommentForm extends React.Component {
   }
 
   handleSubmit(event) {
-    alert('A comment was submitted: ' + this.state.value);
     console.log('this.id: '+this.id);
     console.log('this.state.value: '+this.state.value);
 //     fetch('api/comment/', {
@@ -377,12 +376,14 @@ http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 http.onreadystatechange = function() {//Call a function when the state changes.
   if(http.readyState == 4 && http.status == 200) {
-      alert(http.responseText);
+      console.log(http.responseText);
   }
 }
 http.send(params);
 
     event.preventDefault();
+    url = 'eventview.html?eventid='+this.id;
+    location.href = url;
   }
 
   render() {

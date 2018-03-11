@@ -53,3 +53,10 @@ This API returns a list of events that it thinks the user would be most likely t
 This API returns a list of modified [`event`](https://github.com/avielmenter/eventfeeler/tree/master/data#event) objects.
 
 Each [`event`](https://github.com/avielmenter/eventfeeler/tree/master/data#event) is modified by the addition of a single property, `probability`. This property represents the estimated probability the user will like the event. This number should probably not be shown to users directly. As a user will usually only attend a small number of events in a given category, the `probability` computed will likely be low in absolute terms.
+
+## GET /search/categories
+
+This API returns a list of valid event categories. No event in the database will be part of a category not contained in this list.
+
+### Returns
+This API returns a list of strings, where each string is a different event category.

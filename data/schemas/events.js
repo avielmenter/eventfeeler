@@ -33,7 +33,8 @@ class Events {
                 end_time: Date,                                     // time the event ends
                 ticket_uri : String,                                // url to buy a ticket for this event time
                 comments_fetched : Boolean                          // are this event time's comments in the DB?
-            }]
+            }],
+            sentiment : Number                                      // average sentiment for this event
         });
 
         this.schema.index({'place.loc': '2dsphere'});

@@ -31,7 +31,8 @@ An Event object represents an event in the EventFeeler database. These events ca
         end_time: Date,                                     // time the event ends
         ticket_uri : String,                                // url to buy a ticket for this event time
         comments_fetched : Boolean                          // are this event time's comments in the DB?
-    }]
+    }],
+    sentiment : Number                                      // average sentiment for this event
 }
 ```
 
@@ -100,6 +101,8 @@ A Comment object represents a comment in the EventFeeler database. Comments are 
     loc : {                                             // GeoJSON object describing the comment's location
         type : {type: String, default: 'Point'},
         coordinates: {type: [Number], default: [0, 0]}, // location coordinates in order [long, lat]
-    }
+    },
+    sentiment : Number,                                 // the positive sentiment for the comment
+    neutral : Number,                                   // the probability the sentiment is neutral
 }
 ```

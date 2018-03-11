@@ -34,11 +34,15 @@ class commentAPI {
             if (!c || c.user_id != comment.user_id)
                 throw new Error("No comment matching the specified ID was made by the specified user.");
 
-            c = await c.update({ comment_id: { orig_id: c._id, from: 'EventFeeler' } });
+            await c.update({ comment_id: { orig_id: c._id, from: 'EventFeeler' } });
         }
         else {
             c = await this.api.schemas.Comments.model.findByIdAndUpdate(this.comment_id, comment, {new: true});
         }
+
+        var c = await this.api.schemas.Comments.calculateSentiment(c);
+        var avg = await this.api.schemas.Comments.averageSentimentForEvent(c.event_id);
+        await this.api.schemas.Events.model.findByIdAndUpdate(c.event_id, { $set: { sentiment: avg } });
 
         return c;
     }

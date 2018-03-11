@@ -1,4 +1,8 @@
 var mongoose = require('mongoose');
+var axios = require('axios');
+var querystring = require('querystring');
+
+const SENTIMENT_URL = "http://text-processing.com/api/sentiment/";
 
 class Comments {
     constructor() {
@@ -27,12 +31,38 @@ class Comments {
             loc : {                                             // GeoJSON object describing the comment's location
                 type : {type: String, default: 'Point'},
                 coordinates: {type: [Number], default: [0, 0]}, // location coordinates in order [long, lat]
-            }
+            },
+            sentiment : Number,                                 // the positive sentiment for the comment
+            neutral : Number,                                   // the probability the sentiment is neutral
         });
 
         this.schema.index({'loc': '2dsphere'});
 
         this.model = mongoose.model('comments', this.schema);
+    }
+
+    async calculateSentiment(comment) {
+        var result = await axios.post(SENTIMENT_URL, querystring.stringify({ text: comment.text }));
+        var sentiment = result.data.probability;
+
+        comment.sentiment = sentiment.pos;
+        comment.neutral = sentiment.neutral;
+
+        await comment.save();
+        return comment;
+    }
+
+    async averageSentimentForEvent(event_id) {
+        var results = await this.model.find({ event_id: event_id }).select('sentiment neutral -_id');
+        var avg = 0, totalNeutrality = 0;
+
+        for (let r of results) {
+            avg += r.sentiment ? r.sentiment : 0;
+            totalNeutrality += r.neutral ? r.neutral : 0;
+        }
+
+        avg /= totalNeutrality;
+        return avg;
     }
 
     fromTwitter(tweet, event_id, user_id) {

@@ -7,7 +7,7 @@ class categoriesAPI {
 	async get() {
 		this.api.connect();
 
-		var categories = this.api.schemas.Events.model.find({}).distinct('categories');
+		var categories = await this.api.schemas.Events.model.find({}).distinct('categories');
 		categories.sort();
 
 		return categories;

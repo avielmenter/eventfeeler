@@ -64,29 +64,39 @@ class tweets {
 
     async save(comments, event_id) {
         var inserts = Array();
+        var sentiments = Array();
 
         for (let c of comments) {
             var efUser = await this.verifyUserInDB(c.user);
             var schemaComment = this.api.schemas.Comments.fromTwitter(c, event_id, efUser._id);
 
-            inserts[inserts.length] = new Promise((res, rej) => {
-                var eventModel = this.api.mongoose.model('comments', this.api.schemas.Comments.schema);
+            inserts.push(this.api.schemas.Events.model.findOneAndUpdate(
+                { 'comment_id' : schemaComment.comment_id },
+                schemaComment,
+                { 'upsert': true },
+                function(err, prev) {
+                    if (err)
+                        rej(err);
+                    else
+                        res();
+                }
+            ));
+        }
 
-                eventModel.findOneAndUpdate(
-                    { 'comment_id' : schemaComment.comment_id },
-                    schemaComment,
-                    { 'upsert': true },
-                    function(err, prev) {
-                        if (err)
-                            rej(err);
-                        else
-                            res();
-                    }
-                );
+        var dbComments = await Promise.all(inserts);
+        for (let c of dbComments) {
+            sentiments.push(async function() { 
+                var comment = await this.api.schemas.Comments.calculateSentiment(c);
+                var avg = await this.api.schemas.Comments.averageSentimentForEvent(c.event_id);
+
+                await this.api.schemas.Events.model.findByIdAndUpdate(c.event_id, { $set: { sentiment: avg } });
+
+                return comment;
             });
         }
 
-        await Promise.all(inserts);
+        dbComments = await Promise.all(sentiments);
+        return dbComments;
     }
 }
 

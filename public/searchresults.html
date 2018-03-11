@@ -122,7 +122,7 @@ li a:hover {
     if (hour == 0) hour = 12;
     else if (hour > 12) hour -= 12;
 
-    return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + ' - ' + hour + ':' + d.getMinutes() + ' ' + ap;
+    return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + ' - ' + hour + ':' + String(d.getMinutes()).padStart(2, '0') + ' ' + ap;
   }
 
 var App = React.createClass({
@@ -172,7 +172,7 @@ var App = React.createClass({
     return (
       <div>
         <center><h1>Results found based on your search</h1></center>
-        {this.state.events.map(function(event) {
+        {this.state.events. map(function(event) {
           var url = 'eventview.html?eventid='+event._id;
           console.log(event.event_times.start_time)
           return (

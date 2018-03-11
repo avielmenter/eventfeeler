@@ -334,6 +334,8 @@ class EventData extends React.Component {
         userAttending = "Going";
       }
     }
+    var numUsers = 0;
+    numUsers = userinfo.length;
     return (
     <center><div id ="detail"> <div id="hi">
  {this.state.users.name}</div> < br />
@@ -342,7 +344,8 @@ class EventData extends React.Component {
   <font size="4">       <strong>   Location: </strong> </font><br /> {this.state.users.place && this.state.users.place.name} <br /><br />
   <font size="4">     <strong>     Categories:  </strong> </font><br /> {this.state.users && this.state.users.categories}<br /><br />
   <font size="4">     <strong>     Time & Date: </strong>  </font><br /> {this.state.users && this.state.users.event_times&& this.state.users.event_times[0].start_time} figure out how to change to utc<br />
-  < br/><b>Status:</b> {userAttending}<Not /><br/> <div id="hi2"> Comments</div>
+<br/>  <b> Sentiment Score: </b>{this.state.users.sentiment}
+  < br/><b>Number of users attending: </b>{numUsers}<br/><br/><b>Status:</b> {userAttending}<Not /><br/> <div id="hi2"> Comments</div>
 <CommentForm /> <Comments />
      </div></center>
     );
@@ -410,7 +413,7 @@ var Comments = React.createClass({
            <img src ={link}></img>
 
 <b> {info["twitter"].display_name}</b> @{info["twitter"].username} {event.comment_time} <br/><br/>
-        <div id ="comment2">  {event.text}</div><br/>
+        <div id ="comment2">  {event.text}</div><br/> <b> Comment Sentiment:</b> {event.sentiment}
             </div>
           );
         })}

@@ -111,6 +111,19 @@ li a:hover {
 
 <script type="text/babel">
 
+ function formatDate(dateStr) {
+    if (!dateStr) return "";
+    var d = new Date(dateStr);
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    var hour = d.getHours();
+    var ap = hour >= 12 ? 'pm' : 'am';
+
+    if (hour == 0) hour = 12;
+    else if (hour > 12) hour -= 12;
+
+    return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + ' - ' + hour + ':' + d.getMinutes() + ' ' + ap;
+  }
 
 var App = React.createClass({
 
@@ -166,7 +179,7 @@ var App = React.createClass({
             <div key={event.url} className="event">
               <a href={url}>
                 {event.name} |
-                {event.place.name} | Time: {event.event_times[0].start_time} | Date: {event.event_times[0].start_time}
+                {event.place.name} | Time: {formatDate(event.event_times[0].start_time)} | Date: {formatDate(event.event_times[0].start_time)}
               </a>
             </div>
           );

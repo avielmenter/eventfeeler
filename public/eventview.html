@@ -21,6 +21,9 @@
 
 <style>
 
+form {
+    display: inline;
+}
 .active{
   font-weight: bold;
 }
@@ -85,6 +88,56 @@ html, body {
     font-weight: bold;
 
 }
+
+#notGoing{
+  width: 100px;
+  border-radius: 12px;
+   background-color: red;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    font-family: 'Raleway';
+    font-weight: bold;
+
+}
+#notGoing:hover {
+    background-color: #8B0000;
+    color: white;
+    font-weight: 100;
+}
+
+#going{
+  width: 100px;
+  border-radius: 12px;
+   background-color: #66CC66;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    font-family: 'Raleway';
+    font-weight: bold;
+
+}
+
+#going:hover {
+    background-color: #66FF00;
+    color: white;
+    font-weight: 100;
+}
+
 
 .btn-size:hover {
     background-color: #555555;
@@ -250,17 +303,46 @@ class EventData extends React.Component {
           console.log(this.state.users);
         });
       });
+
   }
 
   render() {
-    return (
+    var queries = qs.get();
 
-    <center><div id ="detail"> <div id="hi"> {this.state.users.name}</div> < br />
+    var userId = '';
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        userId =  JSON.parse(this.responseText);
+      }
+    };
+    xhttp.open("GET", 'api/user/current', false);
+    xhttp.send();
+
+    var userAttending = "Not Going";
+    var userinfo = '';
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        userinfo =  JSON.parse(this.responseText);
+      }
+    };
+    xhttp.open("GET", 'api/attending/'+queries.eventid, false);
+    xhttp.send();
+    for(var i = 0; i < userinfo.length; i++){
+      if(userinfo[i]._id == userId._id){
+        userAttending = "Going";
+      }
+    }
+    return (
+    <center><div id ="detail"> <div id="hi">
+ {this.state.users.name}</div> < br />
+   <div class="btn-group"></div>
   <font size="4">  <strong>Event Description: </strong> </font><br /> {this.state.users.description} < br /><br />
   <font size="4">       <strong>   Location: </strong> </font><br /> {this.state.users.place && this.state.users.place.name} <br /><br />
   <font size="4">     <strong>     Categories:  </strong> </font><br /> {this.state.users && this.state.users.categories}<br /><br />
   <font size="4">     <strong>     Time & Date: </strong>  </font><br /> {this.state.users && this.state.users.event_times&& this.state.users.event_times[0].start_time} figure out how to change to utc<br />
-  < br/><br/><div id="hi2"> Comments</div>
+  < br/><b>Status:</b> {userAttending}<Not /><br/> <div id="hi2"> Comments</div>
 <CommentForm /> <Comments />
      </div></center>
     );
@@ -336,6 +418,80 @@ var Comments = React.createClass({
     )
   }
 });
+
+
+class Not extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: 'Comment on this event here'};
+    this.id = qs.get().eventid;
+    console.log(this.id);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit2 = this.handleSubmit2.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    console.log('this.id: '+this.id);
+    console.log('this.state.value: '+this.state.value);
+var http = new XMLHttpRequest();
+var url = 'api/attending/'+String(this.id);
+var params = "cancel=";
+http.open("POST", url, true);
+
+//Send the proper header information along with the request
+http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+http.onreadystatechange = function() {//Call a function when the state changes.
+  if(http.readyState == 4 && http.status == 200) {
+      console.log(http.responseText);
+  }
+}
+http.send(params);
+
+    event.preventDefault();
+    url = 'eventview.html?eventid='+this.id;
+   location.href = url;
+  }
+
+  handleSubmit2(event) {
+    console.log('this.id: '+this.id);
+    console.log('this.state.value: '+this.state.value);
+var http = new XMLHttpRequest();
+var url = 'api/attending/'+String(this.id);
+var params = "cancel=true";
+http.open("POST", url, true);
+
+//Send the proper header information along with the request
+http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+http.onreadystatechange = function() {//Call a function when the state changes.
+  if(http.readyState == 4 && http.status == 200) {
+      console.log(http.responseText);
+  }
+}
+http.send(params);
+
+    event.preventDefault();
+    url = 'eventview.html?eventid='+this.id;
+   location.href = url;
+  }
+
+  render() {
+    return (
+
+<center>  <div class="btn-group">
+      <form onSubmit={this.handleSubmit}>
+   <button type="submit"  id="going" className="btn btn-size">Going</button></form>
+   <form onSubmit={this.handleSubmit2}>
+<button type="submit"  id="notGoing" className="btn btn-size">Not Going</button></form></div> </center>
+    );
+  }
+}
 
 
 class CommentForm extends React.Component {

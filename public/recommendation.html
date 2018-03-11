@@ -106,6 +106,7 @@ li a:hover {
   <script src='http://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/axios/0.8.1/axios.min.js'></script>
 <script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
+<script src="qs.js"></script>
 
 
 <script type="text/babel">
@@ -120,11 +121,13 @@ var App = React.createClass({
   },
 
   componentDidMount: function() {
+
+
     var last_week = new Date();
     last_week.setDate(last_week.getDate() - 7);
     var th = this;
     this.serverRequest =
-      axios.get('/api/search/events?since=' + last_week + '&until=' + (new Date()))
+      axios.get('/api/search/recommendation?days_out=&limit=')
         .then(function(result) {
           th.setState({
             events: result.data

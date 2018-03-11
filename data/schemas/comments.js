@@ -53,11 +53,11 @@ class Comments {
     }
 
     async averageSentimentForEvent(event_id) {
-        var results = await this.model.find({ event_id: event_id }).select('sentiment neutral -_id');
+        var results = await this.model.find({ event_id: event_id }).select('sentiment neutral');
         var avg = 0, totalNeutrality = 0;
 
         for (let r of results) {
-            avg += r.sentiment ? r.sentiment : 0;
+            avg += r.sentiment ? r.sentiment * r.neutral : 0;
             totalNeutrality += r.neutral ? r.neutral : 0;
         }
 

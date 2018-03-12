@@ -12,7 +12,6 @@ module.exports = {
 	output: {
 		filename: '[name].bundle.js'
 	},
-	watch: true,
 	module: {
 		rules: [
 			{

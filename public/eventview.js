@@ -6,6 +6,7 @@ import moment from 'moment';
 import './qs';
 
 import NavBar from './components/navbar';
+import Comments from './components/comments';
 
 class EventData extends React.Component {
 	constructor(props) {
@@ -37,7 +38,7 @@ class EventData extends React.Component {
 				userId = JSON.parse(this.responseText);
 			}
 		};
-		xhttp.open("GET", 'api/user/current', false);
+		xhttp.open("GET", '/api/user/current', false);
 		xhttp.send();
 
 		var userAttending = "Not Going";
@@ -48,7 +49,7 @@ class EventData extends React.Component {
 				userinfo =	JSON.parse(this.responseText);
 			}
 		};
-		xhttp.open("GET", 'api/attending/'+queries.eventid, false);
+		xhttp.open("GET", '/api/attending/'+queries.eventid, false);
 		xhttp.send();
 		for(var i = 0; i < userinfo.length; i++){
 			if(userinfo[i]._id == userId._id){
@@ -61,7 +62,7 @@ class EventData extends React.Component {
 			<center>
 				<div id ="detail"> 
 					<div id="hi">{this.state.users.name}</div> < br />
-				<div class="btn-group"></div>
+				<div className="btn-group"></div>
 				<font size="4">
 					<strong>Event Description:</strong>
 				</font><br /> 
@@ -81,77 +82,11 @@ class EventData extends React.Component {
 				<b>Number of users attending: </b>{numUsers}<br/><br/>
 				<b>Status:</b> {userAttending}<Not /><br/> 
 				<div id="hi2"> Comments</div>
-					<CommentForm /> <Comments />
+					<CommentForm /> 
+					<Comments event_id={queries.eventid} />
 				</div>
 			</center>
 		);
-	}
-}
-
-class Comments extends React.Component {
-	constructor(props, context) {
-		super(props, context);
-
-		this.state = {
-			events: []
-		};
-	}
-
-	componentDidMount() {
-		var queries = qs.get();
-
-		var last_week = new Date();
-		last_week.setDate(last_week.getDate() - 7);
-		var th = this;
-		this.serverRequest =
-			axios.get('/api/search/comments?event_id='+queries.eventid)
-				.then(function(result) {
-					th.setState({
-						events: result.data
-					});
-				})
-	}
-
-	componentWillUnmount() {
-		this.serverRequest.abort();
-	}
-
-	render() {
-		return (
-			<div>
-				{this.state.events.map(function(event) {
-					var url = 'eventview.html?eventid='+event._id;
-					var userinfo = '';
-					// var userInfo = axios.get('api/user/'+event.user_id)
-					//	 .then(function (response) {
-					//		 console.log(response.data.twitter.username);
-					//		 username = response.data.twitter.username;
-					//		 console.log(username);
-					//	 })
-					//	 .catch(function (error) {
-					//		 console.log(error);
-					//	 });
-					var xhttp = new XMLHttpRequest();
-					xhttp.onreadystatechange = function() {
-						if (this.readyState == 4 && this.status == 200) {
-							userinfo =	this.responseText;
-							console.log(userinfo);
-						}
-					};
-					xhttp.open("GET", 'api/user/'+event.user_id, false);
-					xhttp.send();
-					var info = JSON.parse(userinfo);
-					var link = String(info["twitter"].image_url);
-					return (
-						<div key={event.url} className="event">
-							<img src ={link}></img>
-							<b> {info["twitter"].display_name}</b> @{info["twitter"].username} {event.comment_time} <br/><br/>
-							<div id ="comment2">{event.text}</div><br/> <b> Comment Sentiment:</b> {event.sentiment}
-						</div>
-					);
-				})}
-			</div>
-		)
 	}
 }
 
@@ -219,7 +154,7 @@ class Not extends React.Component {
 	render() {
 		return (
 			<center>	
-				<div class="btn-group">
+				<div className="btn-group">
 					<form onSubmit={this.handleSubmit}>
 						<button type="submit" id="going" className="btn btn-size">Going</button>
 					</form>
@@ -283,11 +218,11 @@ class CommentForm extends React.Component {
 	render() {
 		return (
 			<center>		
-				<div class="comment"><br />
+				<div className="comment"><br />
 				</div>
 				<form onSubmit={this.handleSubmit}>
-					<label for='comment'>
-						<textarea class="form-control" rows="5" cols ="60" id="comment" input type="text"value={this.state.value} onChange={this.handleChange}></textarea>
+					<label htmlFor='comment'>
+						<textarea className="form-control" rows="5" cols ="60" id="comment" type="text" value={this.state.value} onChange={this.handleChange}></textarea>
 					</label><br />
 				<button type="submit" className="btn btn-size">Submit</button>
 				</form> 

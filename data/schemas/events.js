@@ -85,7 +85,8 @@ class Events {
         {
             e.event_times.push({
                 start_time: fbEvent.start_time,
-                end_time: fbEvent.end_time
+                end_time: fbEvent.end_time,
+                comments_fetched: false
             });
         }
         else

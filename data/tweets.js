@@ -64,7 +64,6 @@ class tweets {
 
     async save(comments, event_id) {
         var inserts = Array();
-        var sentiments = Array();
 
         for (let c of comments) {
             var efUser = await this.verifyUserInDB(c.user);
@@ -73,24 +72,27 @@ class tweets {
             inserts.push(this.api.schemas.Comments.model.findOneAndUpdate(
                 { 'comment_id' : schemaComment.comment_id },
                 schemaComment,
-                { 'upsert': true }
+                { 'upsert': true, 'new': true }
             ));
         }
 
         var dbComments = await Promise.all(inserts);
-        for (let c of dbComments) {
-            sentiments.push(async function() { 
+
+        var sentiments = dbComments.map(async c => { 
                 var comment = await this.api.schemas.Comments.calculateSentiment(c);
                 var avg = await this.api.schemas.Comments.averageSentimentForEvent(c.event_id);
 
                 await this.api.schemas.Events.model.findByIdAndUpdate(c.event_id, { $set: { sentiment: avg } });
+                await this.api.schemas.Users.model.update(
+                    { _id: c.user_id, attending: {$ne: c.event_id} },
+                    { $addToSet: { attending: c.event_id } }
+                );
 
                 return comment;
-            });
-        }
+        });
 
-        dbComments = await Promise.all(sentiments);
-        return dbComments;
+        var sentimentComments = await Promise.all(sentiments);
+        return sentimentComments;
     }
 }
 

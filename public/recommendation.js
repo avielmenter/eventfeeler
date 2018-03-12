@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import NavBar from './components/navbar';
+import EventListItem from './components/eventListItem';
 
 export default class App extends React.Component {
 
@@ -36,18 +37,7 @@ export default class App extends React.Component {
 		return (
 			<div>
 				<center><h1>Recommended for you</h1></center>
-				{this.state.events.map(function(event) {
-					var url = 'eventview.html?eventid='+event._id;
-					console.log(event.event_times.start_time)
-					return (
-						<div key={event.url} className="event">
-							<a href={url}>
-								{event.name} |
-								{event.place.name} | Time: {event.event_times[0].start_time} | Date: {event.event_times[0].start_time}
-							</a>
-						</div>
-					);
-				})}
+				{this.state.events.map(e => <EventListItem event={e} />)}
 			</div>
 		)
 	}

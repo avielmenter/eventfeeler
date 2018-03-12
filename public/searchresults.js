@@ -56,7 +56,7 @@ export default class App extends React.Component {
 		return (
 			<div>
 				<h1>Results found based on your search</h1>
-				{this.state.events.map(e => <EventListItem event={e} />)}
+				{this.state.events.map(e => <EventListItem key={e._id} event={e} />)}
 			</div>
 		)
 	}

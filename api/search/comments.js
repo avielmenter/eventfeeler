@@ -6,10 +6,8 @@ class commentsAPI {
         this.query = setQuery;
     }
 
-    async ensureDBRecency(eventModel, ev) {
-        var commentsModel = this.api.mongoose.model('Comment', this.api.schemas.Comments.schema);
-
-        var dbComment = await commentsModel.findOne({ event_id: ev._id }).sort({'created_at': -1});
+    async ensureDBRecency(ev) {
+        var dbComment = await this.api.schemas.Comments.model.findOne({ event_id: ev._id }).sort({'created_at': -1});
 
         this.api.ensureTwitterAuth();
 
@@ -36,7 +34,9 @@ class commentsAPI {
             if (time.comments_fetched)
                 continue;
             else if (moment(new Date()) >= tweets.until)
-                eventModel.findByIdAndUpdate(ev._id, { comments_fetched: true }).then();
+                this.api.schemas.Events.model.update(
+                    { 'event_times._id': time._id },
+                    { 'event_times.$.comments_fetched': true }).then();
 
             if (moment(new Date()) >= tweets.since)
                 twitterComments = twitterComments.concat(await tweets.get());
@@ -52,16 +52,14 @@ class commentsAPI {
         if (!this.query.event_id)
             throw new Error("An event ID and origin datasource must be specified.");
 
-        var eventModel = this.api.mongoose.model('Event', this.api.schemas.Events.schema);
-        var ev = await eventModel.findById(this.query.event_id);
+        var ev = await this.api.schemas.Events.model.findById(this.query.event_id);
 
         if (!ev)
             throw new Error("Invalid ID specified.");
 
-        await this.ensureDBRecency(eventModel, ev);
+        await this.ensureDBRecency(ev);
 
-        var commentsModel = this.api.mongoose.model('Comment', this.api.schemas.Comments.schema);
-        var comments = await commentsModel.find({ event_id: ev._id });
+        var comments = await this.api.schemas.Comments.model.find({ event_id: ev._id });
 
         return comments;
     }

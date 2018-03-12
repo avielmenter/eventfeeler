@@ -30,6 +30,14 @@ class EventData extends React.Component {
 
 	render() {
 		var queries = qs.get();
+		var categories = "";
+		if (this.state.event && this.state.event.categories) {
+			for (let c of this.state.event.categories) {
+				if (categories != "")
+					categories += ", ";
+				categories += c;
+			}
+		}
 
 		return (
 			<div className="event_info">
@@ -39,6 +47,10 @@ class EventData extends React.Component {
 						{this.state.event.name}
 					</div> < br />
 				<div className="btn-group"></div>
+				<strong>Time &amp; Date:</strong><br />
+				{this.state.event && this.state.event.event_times && 
+					moment(this.state.event.event_times[0].start_time).format('LLLL')}<br />
+				<br /> 
 				<strong>Event Description:</strong>
 				<br /> 
 				{this.state.event.description} < br /><br />
@@ -47,11 +59,7 @@ class EventData extends React.Component {
 				{this.state.event.place && this.state.event.place.name} <br /><br />
 				<strong>Categories:</strong>
 				<br /> 
-				{this.state.event && this.state.event.categories}<br /><br />
-				<strong>Time &amp; Date:</strong>
-				<br /> 
-				{this.state.event && this.state.event.event_times && 
-					moment(this.state.event.event_times[0].start_time).format('LLLL')}<br /><br/>	
+				{categories}<br /><br />
 				<Attending event_id={queries.eventid} /><br/> 
 				<div id="hi2"> Comments</div>
 					<CommentForm event_id={queries.eventid} /> 

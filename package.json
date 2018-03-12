@@ -5,6 +5,7 @@
   "scripts": {
     "build": "webpack --mode production --progress",
     "devbuild": "webpack --mode development --progress",
+    "buildwatch": "webpack --mode development --watch",
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
     "postinstall": "webpack --mode production --progress --config ./webpack.config.js"

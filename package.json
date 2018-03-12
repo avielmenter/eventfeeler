@@ -1,6 +1,12 @@
 {
   "name": "eventfeeler",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "babel": {
+    "presets": [
+      "react",
+      "env"
+    ]
+  },
   "private": true,
   "scripts": {
     "build": "webpack --mode production --progress",

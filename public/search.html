@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>EventFeeler | Search</title>
+		<link type="text/css" rel="stylesheet" href="/styles/main.css" />
+		<script type="text/javascript" src="searchValidation.js"></script>
+	</head>
+	<body>
+		<nav></nav>
+		<h1>SEARCH FOR AN EVENT</h1><br />
+
+		Find<br />
+		<input type="text" id="name" name = "name" placeholder="basketball, concert, art, exhibit, food"><br>
+		<div class="dates">
+			<div class="date">
+				Since<br />
+				<input type="date" id="before" name = "before"><br>
+			</div>
+			<div>&nbsp;<!-- padding --></div>
+			<div class="date">
+				Until<br />
+				<input type="date" id="after" name = "after"><br>
+			</div>
+		</div>
+		Categories<br>
+		<input type="text" id="category" name="category" placeholder="humanities, music"><br />
+		<button type="button" id="submit" class="btn btn-size" onclick="search()" >Submit</button>
+
+		<script src="search.js"></script>
+	</body>
+</html>

@@ -5,3 +5,4 @@ npm-debug.log
 .env
 data/keys
 .vscode/*
+/dist

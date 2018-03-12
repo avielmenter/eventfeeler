@@ -16,12 +16,14 @@ var api = require('./data/api')(config);
 process.env.PORT = config.port;
 
 var apiRouter = require('./routes/api')(api);
+var reactRouter = require('./routes/react')(api);
 var loginRouter = require('./routes/login')(api);
 
 var app = express();
 
 // ROUTING
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use('/', reactRouter);
 app.use(express.static(__dirname + '/public'));
 app.use('/styles', expressLess(__dirname + '/public/styles'));
 

@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+body{
+	font-family: "Raleway", Arial;
+	font-size: 20px;
+	text-align: center;
+}
+
+input[type=text], input[type=date] {
+	padding: 12px 20px;
+	margin: 8px 0;
+	box-sizing: border-box;
+	border: 2px solid #81CFE0;
+	border-radius: 4px;
+	margin-bottom: 18pt;
+}
+
+input[type=text] {
+	width: 60%;
+}
+
+input[type=date] {
+	width: 100%;
+}
+
+h1 {
+	font-weight: 100px;
+	font-size: 60px;
+	color:white;
+	background-color:	#81CFE0;
+	margin: 0px;
+	border: 2px solid white
+
+}
+.btn-size{
+	width: 100px;
+	border-radius: 12px;
+	background-color: #81CFE0;
+	border: none;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	-webkit-transition-duration: 0.4s; /* Safari */
+	transition-duration: 0.4s;
+	cursor: pointer;
+	font-family: 'Raleway';
+	font-weight: bold;
+}
+
+.btn-size:hover {
+	background-color: #555555;
+	color: white;
+	font-weight: 100;
+}
+
+.dates {
+	display: flex;
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.date {
+	flex: 48%;
+}
+
+html,body {
+	font-family: 'Lato', sans-serif;
+	height: 100%;
+	margin: 0px;
+}

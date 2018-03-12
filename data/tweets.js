@@ -70,16 +70,10 @@ class tweets {
             var efUser = await this.verifyUserInDB(c.user);
             var schemaComment = this.api.schemas.Comments.fromTwitter(c, event_id, efUser._id);
 
-            inserts.push(this.api.schemas.Events.model.findOneAndUpdate(
+            inserts.push(this.api.schemas.Comments.model.findOneAndUpdate(
                 { 'comment_id' : schemaComment.comment_id },
                 schemaComment,
-                { 'upsert': true },
-                function(err, prev) {
-                    if (err)
-                        rej(err);
-                    else
-                        res();
-                }
+                { 'upsert': true }
             ));
         }
 

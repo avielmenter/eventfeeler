@@ -1,0 +1,20 @@
+@import "../../node_modules/react-toggle-switch/dist/css/switch.min.css";
+
+.btn-size{
+	width: 100px;
+	border-radius: 12px;
+	background-color: #81CFE0;
+	border: none;
+	color: white;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	-webkit-transition-duration: 0.4s; /* Safari */
+	transition-duration: 0.4s;
+	cursor: pointer;
+	font-family: 'Raleway';
+	font-weight: bold;
+
+}

@@ -37,6 +37,7 @@
     "passport-twitter": "~1.0.4",
     "react": "~16.2.0",
     "react-dom": "~16.2.0",
+    "react-toggle-switch": "^3.0.4",
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {

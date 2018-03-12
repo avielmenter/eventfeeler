@@ -1,0 +1,13 @@
+@import url(https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css);
+
+.happy {
+	color: #0C0;
+}
+
+.sad {
+	color: #F00;
+}
+
+.neutral {
+	color: #D90;
+}

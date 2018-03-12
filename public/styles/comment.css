@@ -1,0 +1,18 @@
+.event {
+	display: inline-block;
+	width: 700px;
+	padding: 10px;
+	border: 1px solid #81CFE0;
+	border-radius: 25px;
+	margin: 0 0 10px 0;
+	text-decoration: none;
+	color: black;
+}
+
+.event a span:first-child {
+	font-weight: 900;
+}
+
+#comment2{
+	padding-left: 50px;
+}

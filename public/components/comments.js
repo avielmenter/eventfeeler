@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import Comment from './comment';
 
+import '../styles/comment.css';
+
 export default class Comments extends React.Component {
 	constructor(props, context) {
 		super(props, context);

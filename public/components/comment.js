@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
+
+import Sentiment from './sentiment';
 
 export default class Comment extends React.Component {
 	constructor(props, context) {
@@ -30,9 +33,11 @@ export default class Comment extends React.Component {
 
 		return (
 			<div className="event">
+				<Sentiment neutral={comment.neutral} pos={comment.sentiment} />&nbsp;
 				<img src ={link}></img>
-				<b> {info.twitter.display_name}</b> @{info.twitter.username} {comment.comment_time} <br/><br/>
-				<div id ="comment2">{comment.text}</div><br/> <b> Comment Sentiment:</b> {comment.sentiment}
+				<b> {info.twitter.display_name}</b> @{info.twitter.username}<br /> 
+				{comment.comment_time && moment(comment.comment_time).format('LLLL')} <br/><br/>
+				<div id ="comment2">{comment.text}</div>
 			</div>
 		);
 	

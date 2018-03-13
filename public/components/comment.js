@@ -28,14 +28,15 @@ export default class Comment extends React.Component {
 
 	render() {
 		var comment = this.props.comment;
-		var info = this.state.user;
-		var link = String(info.twitter.image_url ? info.twitter.image_url : "");
+		var info = this.state.user.twitter ? this.state.user.twitter : this.state.user.facebook;
+
+		var link = String(info.image_url ? info.image_url : "");
 
 		return (
 			<div className="event">
 				<Sentiment neutral={comment.neutral} pos={comment.sentiment} />&nbsp;
 				<img src ={link}></img>
-				<b> {info.twitter.display_name}</b> @{info.twitter.username}<br /> 
+				<b> {info.display_name}</b> {info.username ? '@' + info.username : ''}<br /> 
 				{comment.comment_time && moment(comment.comment_time).format('LLLL')} <br/><br/>
 				<div id ="comment2">{comment.text}</div>
 			</div>

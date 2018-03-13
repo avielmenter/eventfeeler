@@ -90,7 +90,7 @@ class recommendationAPI {
         for (var u of upcomingEvents) {
             var r = u.toObject();
             r._id = u._id;
-            r.probability = 1.0;
+            r.probability = 1.0e+35; // scaling factor so floating point math is more accurate
 
             for (let c of allCategories)
                 if (r.categories.includes(c))
@@ -102,8 +102,6 @@ class recommendationAPI {
         }
 
         recommended.sort((l, r) => r.probability - l.probability);
-        recommended = recommended.reverse();
-
         return recommended.filter(r => r.probability > 0).slice(0, limit);
     }
 }

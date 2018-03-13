@@ -31,3 +31,17 @@ img {
 	width: 100px;
 	margin-top: 4em;
 }
+
+.privacy {
+	margin-top: 4em;
+}
+
+.privacy a {
+	color: #999;
+	font-size: 8pt;
+	text-decoration: underline;
+}
+
+.privacy a:hover {
+	text-decoration: none;
+}

@@ -38,8 +38,10 @@ class recommendationAPI {
 
         var pAttendAndCat = {};     // probability that the user attended this event and the event is in the given category
         var pAttendNotCat = {};     // probability that the user attended an event not in this category
+       
         var pCat = {};              // probability an event is in this category
-
+        var pNotCat = {};
+        
         var catCountPromises = [];
 
         for (let a of attended) {
@@ -53,13 +55,6 @@ class recommendationAPI {
 
                 if (catCountPromises.length < allCategories.length)
                     catCountPromises.push(recommendationAPI.keyPromise(c, this.api.schemas.Events.model.count({ categories: c })));
-                /*
-                if (!(c in pAttendAndCat)) {
-                    pAttendAndCat[c] = 1.0;
-                    catCountPromises.push(recommendationAPI.keyPromise(c, this.api.schemas.Events.model.count({ categories: c })));
-                } else {
-                    pAttendAndCat[c] += 1.0;
-                }//*/
             }
         }
 
@@ -67,8 +62,16 @@ class recommendationAPI {
             return [];
             
         var catCountResults = await Promise.all(catCountPromises);
-        for (let r of catCountResults)
+        var totalEvents = await this.api.schemas.Events.model.find({
+            $or: [{ 'event_ids.from': 'Calendar' }, { 'event_ids.from': 'Facebook' }]
+        }).count();
+
+        console.log(totalEvents + " total events.");
+
+        for (let r of catCountResults) {
             pCat[r.key] = r.result;
+            pNotCat[r.key] = totalEvents - r.result;
+        }
 
         var upcomingEvents = await this.api.schemas.Events.model.find({ // find non-class events in the next week with category the user's attended
             $or: [{ 'event_ids.from': 'Calendar' }, { 'event_ids.from': 'Facebook' }],
@@ -76,8 +79,6 @@ class recommendationAPI {
                 $lte: moment(new Date()).add(daysOut, 'days').toDate(),
                 $gte: moment(new Date()).toDate()
             } } },
-            categories: { $elemMatch: { $in: Object.keys(pAttendAndCat) } },
-            // categories: { $in: Object.keys(pCat)  },
             _id: { $nin: user.attending }
         });
 
@@ -89,17 +90,18 @@ class recommendationAPI {
             r.probability = 1.0;
 
             for (let c of allCategories)
-                if (c in r.categories)
+                if (r.categories.includes(c))
                     r.probability *= pAttendAndCat[c] / pCat[c]; // Bayes' rule: p(a|b) = p(a AND b) / p(b)
                 else
-                    r.probability *= pAttendNotCat[c] / pCat[c];
+                    r.probability *= pAttendNotCat[c] / pNotCat[c];
 
             recommended.push(r);
         }
 
-        return recommended.sort((l, r) => r.probability - l.probability)
-                            .filter(r => r.probability > 0)
-                            .slice(0, limit);
+        recommended.sort((l, r) => r.probability - l.probability);
+        recommended = recommended.reverse();
+
+        return recommended.filter(r => r.probability > 0).slice(0, limit);
     }
 }
 

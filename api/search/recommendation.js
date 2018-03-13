@@ -63,7 +63,8 @@ class recommendationAPI {
                 $lte: moment(new Date()).add(daysOut, 'days').toDate(),
                 $gte: moment(new Date()).toDate()
             } } },
-            categories: { $in: Object.keys(pCat)  }
+            categories: { $in: Object.keys(pCat)  },
+            _id: { $nin: user.attending }
         });
 
         var recommended = [];

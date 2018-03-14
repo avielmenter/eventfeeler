@@ -162,7 +162,7 @@ class eventsAPI {
         }
 
         var merged = {
-            name: events.filter(e => e.name)[0].name,
+            name: events.filter(e => e && e.name)[0].name,
             description: events.filter(e => e.description)[0].description,
             place: events.filter(e => e.place.loc[0] != 0 && e.place.loc[1] != 0)[0].place,
             event_times: event_times,

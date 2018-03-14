@@ -33,7 +33,7 @@ An Event object represents an event in the EventFeeler database. These events ca
         comments_fetched : Boolean                          // are this event time's comments in the DB?
     }],
     sentiment : Number,                                     // average sentiment for this event
-    numComments : Number                                     // the number of comments made on this event
+    numComments : Number                                    // the number of comments made on this event
 }
 ```
 

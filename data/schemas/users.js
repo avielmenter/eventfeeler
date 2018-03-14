@@ -143,7 +143,7 @@ class Users {
 
             var comments = require('./comments');
             await comments.model.update(
-                { user_id:  existing._id },
+                { $or: [{ user_id:  existing._id }, { user_id: old._id}] },
                 { $set: { user_id: newUser._id } }
             );
         } catch (err) {

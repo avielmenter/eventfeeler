@@ -51,12 +51,18 @@ class eventsAPI {
         console.log("Saving " + events.length + " new facebook events to database.");
         var newFBEvents = await fbEventsAPI.save(events);
         console.log("Events saved.");
-        for (let newFB of newFBEvents) {
-            var same = await this.findSame(newFB);
-            if (same && same.length > 1)
-                await this.merge(same);
+
+        try {
+            for (let newFB of newFBEvents) {
+                var same = await this.findSame(newFB);
+                if (same && same.length > 1)
+                    await this.merge(same);
+            }
+            console.log("Events merged.");
+        } catch (err) {
+            console.log("Error merging events.");
+            throw err;
         }
-        console.log("Events merged.");
 
         // SAVE UCI EVENTS
         var calAPI = require('../../data/calendarEvents.js')(this.api);

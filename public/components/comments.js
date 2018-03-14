@@ -14,7 +14,7 @@ export default class Comments extends React.Component {
 		};
 	}
 
-	componentDidMount() {	
+	componentDidMount() {
 		this.serverRequest = axios.get('/api/search/comments?event_id=' + this.props.event_id)
 			.then(result => {
 				this.setState({
@@ -30,7 +30,7 @@ export default class Comments extends React.Component {
 	render() {
 		return (
 			<div>
-				{this.state.comments.map(c => <Comment key={c._id} comment={c} /> )}
+				{this.state.comments.map(c => <div><Comment key={c._id} comment={c} /><br/></div> )}
 			</div>
 		)
 	}

@@ -34,10 +34,19 @@ export default class App extends React.Component {
 	}
 
 	render() {
+		const recommendedList = this.state.events.map(e => <EventListItem event={e} />);
+		const recommendationsText = (
+			<div>
+				You've got no recommendations so far.<br /><br />
+				Eventfeeler can recommend events near UCI by seeing what events you're attending.  So don't be shy to say you're going places!
+			</div>
+		);
 		return (
 			<div>
-				<center><h1>Recommended for you</h1></center>
-				{this.state.events.map(e => <EventListItem event={e} />)}
+					<h1>Recommended for you</h1>
+				<div className="recommender-events-list">
+					{recommendedList.length ? recommendedList : recommendationsText}
+				</div>
 			</div>
 		)
 	}

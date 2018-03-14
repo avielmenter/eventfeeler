@@ -7,7 +7,7 @@ ReactDOM.render(<NavBar />, document.getElementsByTagName("nav")[0]);
 
 //*
 var xmlhttp = new XMLHttpRequest();
-		
+
 var next_week = new Date();
 next_week.setDate(next_week.getDate() + 7);
 var url = '/api/search/events?since=' + (new Date()) + '&until=' + next_week;

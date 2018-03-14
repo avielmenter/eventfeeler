@@ -41,29 +41,35 @@ class EventData extends React.Component {
 
 		return (
 			<div className="event_info">
-				<div id ="detail"> 
-					<div id="hi">
-						<Sentiment neutral="0" pos={this.state.event.sentiment} />&nbsp;
-						{this.state.event.name}
-					</div> < br />
-				<div className="btn-group"></div>
-				<strong>Time &amp; Date:</strong><br />
-				{this.state.event && this.state.event.event_times && 
-					moment(this.state.event.event_times[0].start_time).format('LLLL')}<br />
-				<br /> 
-				<strong>Event Description:</strong>
-				<br /> 
-				{this.state.event.description} < br /><br />
-				<strong>Location:</strong>
-				<br /> 
-				{this.state.event.place && this.state.event.place.name} <br /><br />
-				<strong>Categories:</strong>
-				<br /> 
-				{categories}<br /><br />
-				<Attending event_id={queries.eventid} /><br/> 
-				<div id="hi2"> Comments</div>
-					<CommentForm event_id={queries.eventid} /> 
-					<Comments event_id={queries.eventid} />
+				<div id ="detail">
+					<div className="event-left">
+						<div id="hi">
+							<Sentiment neutral="0" pos={this.state.event.sentiment} />&nbsp;
+							{this.state.event.name}
+						</div>
+						<br />
+						<div className="btn-group"></div>
+						<strong>Time &amp; Date:</strong><br />
+						{this.state.event && this.state.event.event_times &&
+							moment(this.state.event.event_times[0].start_time).format('LLLL')}<br />
+						<br />
+						<strong>Event Description:</strong>
+						<br />
+						{this.state.event.description} < br /><br />
+						<strong>Location:</strong>
+						<br />
+						{this.state.event.place && this.state.event.place.name} <br /><br />
+						<strong>Categories:</strong>
+						<br />
+						{categories}<br /><br />
+						<Attending event_id={queries.eventid} />
+						<br/>
+					</div>
+					<div className="event-right">
+						<div id="hi2"> Comments</div>
+						<CommentForm event_id={queries.eventid} />
+						<Comments event_id={queries.eventid} />
+					</div>
 				</div>
 			</div>
 		);

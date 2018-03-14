@@ -23,11 +23,22 @@ export default class EventListItem extends React.Component {
 
 		var url = 'eventview.html?eventid='+event._id;
 		return (
-			<div key={event.url} className="event">
-				<a href={url}>
-					{event.name} |
-					{event.place.name} | Time: {formatDate(event.event_times[0].start_time)} | Date: {formatDate(event.event_times[0].start_time)}
-				</a>
+			<div key={event.url} className="event-box">
+				<div className="event-header"><a href={url}>{event.name}</a></div>
+				<div className="event-body">
+					<tr>
+						<td><span className="table-header">Location</span></td>
+						<td>{event.place.name}</td>
+					</tr>
+					<tr>
+						<td><span className="table-header">Date</span></td>
+						<td>{formatDate(event.event_times[0].start_time)}</td>
+					</tr>
+					<tr>
+						<td><span className="table-header">Time</span></td>
+						<td>{formatDate(event.event_times[0].start_time)}</td>
+					</tr>
+				</div>
 			</div>
 		);
 	}

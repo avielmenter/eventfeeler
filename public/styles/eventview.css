@@ -5,12 +5,32 @@
 	text-align: center;
 }
 
+.event-left {
+	display: inline;
+	left: 0;
+	width: 50%;
+	padding: 2%;
+	position: absolute;
+}
+
+.event-right {
+	display: inline;
+	right: 0;
+	width: 50%;
+	position: absolute;
+	padding: 2%;
+}
+
 #hi{
-	font-family: 'Raleway';
-	font-size: 40px;
-	background-color: #81CFE0;
+	font-family: Raleway;
+	font-size: 35px;
+	padding: 2%;
 	color: white;
-	font-weight: bold;
+	text-transform: uppercase;
+	font-weight: bolder;
+	letter-spacing: 3px;
+	background-color: rgba(129,207,224,0.8);
+	margin: 0;
 }
 
 #hi2{

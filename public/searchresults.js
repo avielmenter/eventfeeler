@@ -53,10 +53,17 @@ export default class App extends React.Component {
 	}
 
 	render() {
+		const results = this.state.events.map(e => <EventListItem key={e._id} event={e} />);
+		const error = (
+			<div>
+				Sorry, we didn't find any results.  Please try another search term.<br/>
+				<a href="/search.html">Go back</a>
+			</div>
+		);
 		return (
 			<div>
 				<h1>Results found based on your search</h1>
-				{this.state.events.map(e => <EventListItem key={e._id} event={e} />)}
+				{results.length ? results : error}
 			</div>
 		)
 	}

@@ -6,6 +6,8 @@ body{
 	font-family: "Raleway", Arial;
 	font-size: 20px;
 	text-align: center;
+	line-height: 40px;
+	color: #333333;
 }
 
 input[type=text], input[type=date] {
@@ -26,12 +28,15 @@ input[type=date] {
 }
 
 h1 {
-	font-weight: 100px;
-	font-size: 60px;
-	color:white;
-	background-color:	#81CFE0;
-	margin: 0px;
-	border: 2px solid white
+	font-family: Raleway;
+	font-size: 35px;
+	padding: 2%;
+	color: white;
+	text-transform: uppercase;
+	font-weight: bolder;
+	letter-spacing: 3px;
+	background-color: rgba(129,207,224,0.8);
+	margin: 0;
 
 }
 .btn-size{
@@ -73,4 +78,10 @@ html,body {
 	font-family: 'Lato', sans-serif;
 	height: 100%;
 	margin: 0px;
+}
+
+.recommender-events-list {
+	margin: 5% 15% 5% 15%;
+	display: flex;
+	flex-wrap: wrap;
 }

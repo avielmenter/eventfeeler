@@ -111,6 +111,7 @@ class Users {
         var u = {};
         u.primary_profile = profile.provider;
         u[profile.provider] = this.fromProfile(profile)[profile.provider];
+        u.attending = old.attending;
 
         var query = {};
         query[profileID] = profile.id;
@@ -118,15 +119,22 @@ class Users {
         var existing = await this.model.findOne(query);
 
         for (let provider of PROFILE_PROVIDERS) {
-            if (this.hasProvider(old, provider) && this.hasProvider(existing, provider) && old[provider][provider + '_id'] != existing[provider][provider + '_id'])
+            if (this.hasProvider(old, provider) && this.hasProvider(existing, provider) && old[provider][provider + '_id'] != existing[provider][provider + '_id']) {
                 throw new Error("There is already another user with this " + profile.provider + " profile.");
-            else if (this.hasProvider(old, provider) && provider != profile.provider)
+            } else if (this.hasProvider(old, provider) && provider != profile.provider) {
                 u[provider] = old.toObject()[provider];
-            else if (this.hasProvider(existing, provider) && provider != profile.provider)
+                u.attending = u.attending.concat(existing);
+            } else if (this.hasProvider(existing, provider) && provider != profile.provider) {
                 u[provider] = e.toObject()[provider];
+                u.attending = u.attending.concat(existing);
+            }
         }
 
-        var existingUpdate = {};
+        u.attending = u.attending.sort().filter(function(item, pos, ary) {
+            return !pos || item != ary[pos - 1];
+        }); // remove duplicates
+
+        var existingUpdate = {};    // mark for deletion, but don't actually delete until other profile is updated
         existingUpdate[profileID] = 'delme_' + profile.id;
         await this.model.findByIdAndUpdate(existing._id, { $set: existingUpdate });
 

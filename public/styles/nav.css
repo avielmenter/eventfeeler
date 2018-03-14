@@ -14,8 +14,10 @@
 
 .nav {
 	padding: 0;
+	line-height: 25px;
 	overflow: hidden;
 	background-color: #81CFE0;
+	width: 100%;
 }
 
 ul {

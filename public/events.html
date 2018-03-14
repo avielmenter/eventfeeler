@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="events">
+    <head>
+        <meta charset="utf-8" />
+        <title>Events</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+        <script src="events.js"></script>
+        <link rel="stylesheet" type="text/css" href="/styles/main.css" />
+    </head>
+    <body ng-controller="mainController">
+        <ul ng-repeat="event in events">
+            <li><b>Name:</b> {{event.name}}</li>
+            <li><b>Place:</b> {{event.place.name}}</li>
+            <li><b>ID:</b> {{event._id}}</li>
+            <li><b>Time:</b>
+                <ul ng-repeat="event_time in event.event_times">
+                    <li><b>Starts At:</b> {{event_time.start_time}}</li>
+                    <li><b>Ends At:</b> {{event_time.end_time}}</li>
+                </ul>
+            </li>
+            <li><b>Location:</b>
+                <ul>
+                    <li><b>Latitude:</b> {{event.place.loc.coordinates[1]}}</li>
+                    <li><b>Longitude:</b> {{event.place.loc.coordinates[0]}}</li>
+                </ul>
+            </li>
+            <li><b>Categories:</b>
+                <ul>
+                    <li ng-repeat="cat in event.categories">{{cat}}</li>
+                </ul>
+            </li>
+            <li><b>Comments:</b>
+                <ul>
+                    <li ng-repeat"comment in event.comments">
+                        <a href="{{comment.user.profile_url}}">
+                            {{comment.user.name}}
+                        </a>&nbsp;
+                        {{comment.text}}
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </body>
+</html>

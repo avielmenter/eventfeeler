@@ -52,10 +52,16 @@ for (i = 0; i < locations.length; i++) {
 	var id = locations[i]._id;
 	var idUrl = "eventview.html?eventid="+id;
 	if(locations[i].place.loc != null ){
+		var eventIcon = icon;
+		if (locations[i].sentiment > 0.5)
+			eventIcon = posIcon;
+		else if (locations[i].sentiment > 0)
+			eventIcon = negIcon;
+
 		marker = new google.maps.Marker({
 			position: new google.maps.LatLng(locations[i].place.loc.coordinates[1], locations[i].place.loc.coordinates[0]),
 			map: map,
-			icon: icon
+			icon: eventIcon
 		})
 	};
 

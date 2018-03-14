@@ -9,23 +9,25 @@
 	<body>
 		<nav></nav>
 		<h1>SEARCH FOR AN EVENT</h1><br />
-		<div>You can find an event by filling out any one of these fields.</div>
-		Find by generic keyword<br />
-		<input type="text" id="name" name = "name" placeholder="basketball, concert, art, exhibit, food"><br>
-		Find by general sort of event<br>
-		<input type="text" id="category" name="categories" placeholder="humanities, music"><br />
-		<div class="dates">
-			<div class="date">
-				From<br />
-				<input type="date" id="before" name = "before"><br>
+		<div class="search-content">
+			<div class="search-intro">You can find an event by filling out any one of these fields.</div>
+			Find by generic keyword<br />
+			<input type="text" id="name" name = "name" placeholder="basketball, concert, art, exhibit, food"><br>
+			Find by general sort of event<br>
+			<input type="text" id="category" name="categories" placeholder="humanities, music"><br />
+			<div class="dates">
+				<div class="date">
+					From<br />
+					<input type="date" id="before" name = "before"><br>
+				</div>
+				<div>&nbsp;<!-- padding --></div>
+				<div class="date">
+					Until<br />
+					<input type="date" id="after" name = "after"><br>
+				</div>
 			</div>
-			<div>&nbsp;<!-- padding --></div>
-			<div class="date">
-				Until<br />
-				<input type="date" id="after" name = "after"><br>
-			</div>
+			<button type="button" id="submit" class="btn btn-size" onclick="search()" >Submit</button>
 		</div>
-		<button type="button" id="submit" class="btn btn-size" onclick="search()" >Submit</button>
 
 		<script src="search.js"></script>
 	</body>

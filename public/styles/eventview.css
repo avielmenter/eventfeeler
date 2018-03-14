@@ -5,20 +5,112 @@
 	text-align: center;
 }
 
-.event-left {
-	display: inline;
-	left: 0;
-	width: 50%;
-	padding: 2%;
-	position: absolute;
+/* ----------- Non-Retina Screens ----------- */
+@media screen
+  and (min-device-width: 1200px)
+  and (max-device-width: 1600px)
+  and (-webkit-min-device-pixel-ratio: 1) {
+		.event-left {
+			display: inline;
+			left: 0;
+			width: 50%;
+			padding: 2%;
+			position: absolute;
+		}
+
+		.event-right {
+			display: inline;
+			right: 0;
+			width: 50%;
+			position: absolute;
+			padding: 2%;
+		}
 }
 
-.event-right {
-	display: inline;
-	right: 0;
-	width: 50%;
-	position: absolute;
-	padding: 2%;
+/* ----------- Retina Screens ----------- */
+@media screen
+  and (min-device-width: 1200px)
+  and (max-device-width: 1600px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (min-resolution: 192dpi) {
+
+		.event-left {
+			display: inline;
+			left: 0;
+			width: 50%;
+			padding: 2%;
+			position: absolute;
+		}
+
+		.event-right {
+			display: inline;
+			right: 0;
+			width: 50%;
+			position: absolute;
+			padding: 2%;
+		}
+}
+
+/* ----------- iPhone 6, 6S, 7 and 8 ----------- */
+
+
+/* Portrait and Landscape */
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 667px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+		.event-left {
+			display: block;
+			width: 100%;
+			padding: 2%;
+			font-size: 40px;
+		}
+
+		.event-right {
+			display: block;
+			width: 100%;
+			font-size: 40px;
+		}
+}
+
+/* Portrait */
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 667px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+		.event-left {
+			display: block;
+			width: 100%;
+			padding: 2%;
+			font-size: 40px;
+		}
+
+		.event-right {
+			display: block;
+			width: 100%;
+			font-size: 40px;
+		}
+}
+
+/* Landscape */
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 667px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+		.event-left {
+			display: block;
+			width: 100%;
+			padding: 2%;
+			font-size: 40px;
+		}
+
+		.event-right {
+			display: block;
+			width: 100%;
+			font-size: 40px;
+		}
 }
 
 #hi{

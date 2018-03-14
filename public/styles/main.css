@@ -10,6 +10,26 @@ body{
 	color: #333333;
 }
 
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 667px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+		body {
+			font-size: 50px;
+			line-height: 50px;
+		}
+
+		.search-content {
+			margin: 7%;
+			font-size: 40px;
+			line-height: 60px;
+		}
+}
+
+.search-intro {
+	margin-bottom: 5%;
+}
+
 input[type=text], input[type=date] {
 	padding: 12px 20px;
 	margin: 8px 0;
@@ -37,8 +57,8 @@ h1 {
 	letter-spacing: 3px;
 	background-color: rgba(129,207,224,0.8);
 	margin: 0;
-
 }
+
 .btn-size{
 	width: 100px;
 	border-radius: 12px;

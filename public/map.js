@@ -7,7 +7,7 @@ ReactDOM.render(<NavBar />, document.getElementsByTagName("nav")[0]);
 
 //*
 var xmlhttp = new XMLHttpRequest();
-		
+
 var next_week = new Date();
 next_week.setDate(next_week.getDate() + 7);
 var url = '/api/search/events?since=' + (new Date()) + '&until=' + next_week;
@@ -35,19 +35,30 @@ var icon = {
 	scaledSize: new google.maps.Size(50, 50), // size
 };
 
+var negIcon = {
+	url: "images/neg.png", // url
+	scaledSize: new google.maps.Size(50, 50), // size
+};
+
+var posIcon = {
+	url: "images/pos.png", // url
+	scaledSize: new google.maps.Size(50, 50), // size
+};
+
 var infowindow = new google.maps.InfoWindow();
 var marker, i;
 
 for (i = 0; i < locations.length; i++) {
 	var id = locations[i]._id;
 	var idUrl = "eventview.html?eventid="+id;
-	if(locations[i].place.loc != null){
+	if(locations[i].place.loc != null ){
 		marker = new google.maps.Marker({
 			position: new google.maps.LatLng(locations[i].place.loc.coordinates[1], locations[i].place.loc.coordinates[0]),
 			map: map,
 			icon: icon
 		})
 	};
+
 
 	google.maps.event.addListener(marker, 'click', (function(marker, i) {
 		return function() {

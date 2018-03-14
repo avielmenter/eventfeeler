@@ -8,7 +8,7 @@ function isInputEmpty(fieldName) {
 
 function validateInput() {
 	//Both the name and date fields cannot be null!
-	if (isInputEmpty("name") && (isInputEmpty("before") || isInputEmpty("after"))) {
+	if (isInputEmpty("name") && isInputEmpty("categories") && (isInputEmpty("before") || isInputEmpty("after"))) {
 		alert("Either both the date fields must be completely filled or the 'Find' field must be filled.")
 		return false;
 	}

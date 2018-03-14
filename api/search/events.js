@@ -197,15 +197,15 @@ class eventsAPI {
     }
 
     async get() {
-        if ((!this.query.since || !this.query.until) && !this.query.name)
-            throw new Error("You must specify a start and end date, or an event name for your query.");
+        if ((!this.query.since || !this.query.until) && !this.query.categories && !this.query.name)
+            throw new Error("You must specify a start and end date, an event name, or an event category for your query.");
 
         this.api.connect();
 
         var since = new Date(this.query.since);
         var until = new Date(this.query.until);
 
-        if (!this.query.name && until - since > WEEK_IN_MS)
+        if (!this.query.name && !this.query.categories && until - since > WEEK_IN_MS)
             throw new Error("You cannot request more than a week's worth of events at a time.");
         else if (until - since <= WEEK_IN_MS)
             this.ensureDBRecency(since, until).then(); // update DB asynchronously so we don't wait on the API fetching

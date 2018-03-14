@@ -32,7 +32,8 @@ An Event object represents an event in the EventFeeler database. These events ca
         ticket_uri : String,                                // url to buy a ticket for this event time
         comments_fetched : Boolean                          // are this event time's comments in the DB?
     }],
-    sentiment : Number                                      // average sentiment for this event
+    sentiment : Number,                                     // average sentiment for this event
+    numComents : Number                                     // the number of comments made on this event
 }
 ```
 

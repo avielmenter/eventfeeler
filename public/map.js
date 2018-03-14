@@ -67,8 +67,12 @@ for (i = 0; i < locations.length; i++) {
 
 
 	google.maps.event.addListener(marker, 'click', (function(marker, i) {
+		var numComments = locations[i].numComments + " Comment";
+		if (locations[i].numComments != 1)
+			numComments += "s";
+
 		return function() {
-			infowindow.setContent("<center>"+'<font face="Raleway">'+"<h3><a href="+"eventview.html?eventid="+locations[i]._id+">" +locations[i].name+"</a></h3><br><h4>Location: "+locations[i].place.name +"</h4><br>"+locations[i].description+"</font></center>");
+			infowindow.setContent("<center>"+'<font face="Raleway">'+"<h3><a href="+"eventview.html?eventid="+locations[i]._id+">" +locations[i].name+"</a></h3><div class='numComments'>" + numComments + "</div><br /><h4>Location: "+locations[i].place.name +"</h4><br>"+locations[i].description+"</font></center>");
 			infowindow.open(map, marker);
 		}
 	})(marker, i));

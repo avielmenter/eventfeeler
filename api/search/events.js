@@ -244,7 +244,11 @@ class eventsAPI {
             });
         }
 
-        var events = await dbQuery;
+        var events = (await dbQuery).map(dbEvent => dbEvent.toObject());
+        for (let e of events) {
+            e.numComments = await this.api.schemas.Comments.model.find({ event_id: e._id }).count();
+        }
+
         console.log("Returning " + events.length + " events.");
         return events;
     }

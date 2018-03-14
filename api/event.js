@@ -14,7 +14,10 @@ class eventAPI {
         if (!e)
             throw new Error("No event found with the specified ID.");
 
-        return e;
+        var jsonEvent = e.toObject();
+        jsonEvent.numComments = await this.api.schemas.Comments.model.find({ event_id: e._id }).count();
+        
+        return jsonEvent;
     }
 }
 

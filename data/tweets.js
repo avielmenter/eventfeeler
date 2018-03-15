@@ -14,7 +14,7 @@ class tweets {
 
     getURL() {
         var url = this.api.TWITTER_API + "1.1/search/tweets.json?q=";   // twitter only filters by date, so time filtering is manual
-        url += "&since=" + moment(this.since).format('YYYY-MM-DD');
+        
         url += "&until=" + moment(this.until).add(1, 'day').format('YYYY-MM-DD');
         url += "&geocode=" + this.lat + "," + this.long + "," + (this.distance / 1000) + "km";
 

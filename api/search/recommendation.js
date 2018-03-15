@@ -90,8 +90,8 @@ class recommendationAPI {
         for (var u of upcomingEvents) {
             var r = u.toObject();
             r._id = u._id;
-            r.probability = 1.0e+35; // scaling factor so floating point math is more accurate
-
+            r.probability = 1.0;
+            
             for (let c of allCategories)
                 if (r.categories.includes(c))
                     r.probability *= pAttendAndCat[c] / pCat[c]; // Bayes' rule: p(a|b) = p(a AND b) / p(b)

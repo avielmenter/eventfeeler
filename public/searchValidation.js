@@ -45,8 +45,8 @@ function search(){
 		url += "&since=" + document.getElementById("before").value;
 		url += "&until=" + document.getElementById("after").value;
 	}
-	if (!isInputEmpty("category")) {
-		url += "&category=" + document.getElementById("category").value;
+	if (!isInputEmpty("categories")) {
+		url += "&categories=" + document.getElementById("categories").value;
 	}
 
 	location.href = url;

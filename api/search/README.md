@@ -14,6 +14,7 @@ This API returns [`event`](https://github.com/avielmenter/eventfeeler/tree/maste
 - `nearLong`: retrieve events near this Longitude
 - `distance`: retrieve events within this distance (in meters) of the specified location
 - `categories`: retrieve events belong to the specified comma-separated list of categories
+- `classes`: if left blank or set to false, classes will not be included in the results
 
 \* - required parameter. If the `since` and `until` parameters are not specified, then the `name` parameter must be present.
 

@@ -48,6 +48,9 @@ function search(){
 	if (!isInputEmpty("categories")) {
 		url += "&categories=" + document.getElementById("categories").value;
 	}
+	if (!isInputEmpty("classes") && document.getElementById("classes").checked) {
+		url += "&classes=true";
+	}
 
 	location.href = url;
 }

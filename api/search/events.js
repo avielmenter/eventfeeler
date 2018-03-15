@@ -1,6 +1,9 @@
 const escapeStringRegexp = require('escape-string-regexp');
+var moment = require('moment');
+
 const CURRENT_QUARTER = '2018-03';
 const WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000;
+const TZ = 'America/Los_Angeles';
 
 class eventsAPI {
     constructor(setAPI, setQuery) {
@@ -202,15 +205,15 @@ class eventsAPI {
 
         this.api.connect();
 
-        var since = new Date(this.query.since);
-        var until = new Date(this.query.until);
+        var since = moment(this.query.since, TZ).toDate();
+        var until = moment(this.query.until, TZ).toDate();
 
         if (!this.query.name && !this.query.categories && until - since > WEEK_IN_MS)
             throw new Error("You cannot request more than a week's worth of events at a time.");
         else if (until - since <= WEEK_IN_MS)
             this.ensureDBRecency(since, until).then(); // update DB asynchronously so we don't wait on the API fetching
 
-        var eventsModel = this.api.mongoose.model('events', this.api.schemas.Events.schema);
+        var eventsModel = this.api.schemas.Events.model;
 
         var categories = [];
         if (this.query.categories)

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
+import moment from 'moment';
+
 import '../styles/eventListItem.css';
 
 function formatDate(dateStr) {
@@ -19,9 +21,21 @@ function formatDate(dateStr) {
 
 export default class EventListItem extends React.Component {
 	render() {
-		var event = this.props.event;
+		let event = this.props.event;
+		let url = 'eventview.html?eventid='+event._id;
 
-		var url = 'eventview.html?eventid='+event._id;
+		var event_times = event.event_times ? event.event_times : [];
+		event_times.sort((a, b) => moment(a.start_time).diff(moment(b.start_time), 'minutes'));
+
+		var event_time = event_times[0];
+
+		for (let et of event.event_times) {	// event we show should be next upcoming event time
+			event_time = et;
+
+			if (moment(et.start_time).diff(moment(new Date()), 'minutes') > 0)
+				break;
+		}
+
 		return (
 			<div key={event.url} className="event-box">
 				<div className="event-header"><a href={url}>{event.name}</a></div>
@@ -32,12 +46,12 @@ export default class EventListItem extends React.Component {
 					</tr>
 					<tr>
 						<td><span className="table-header">Starts</span></td>
-						<td>{formatDate(event.event_times[0].start_time)}</td>
+						<td>{formatDate(event_time.start_time)}</td>
 					</tr>
-					{event.event_times[0].end_time && 
+					{event_time.end_time && 
 					<tr>
 						<td><span className="table-header">Ends</span></td>
-						<td>{formatDate(event.event_times[0].end_time)}</td>
+						<td>{formatDate(event_time.end_time)}</td>
 					</tr>}
 				</div>
 			</div>

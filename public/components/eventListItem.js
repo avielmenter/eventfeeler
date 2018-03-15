@@ -31,13 +31,14 @@ export default class EventListItem extends React.Component {
 						<td>{event.place.name}</td>
 					</tr>
 					<tr>
-						<td><span className="table-header">Date</span></td>
+						<td><span className="table-header">Starts</span></td>
 						<td>{formatDate(event.event_times[0].start_time)}</td>
 					</tr>
+					{event.event_times[0].end_time && 
 					<tr>
-						<td><span className="table-header">Time</span></td>
-						<td>{formatDate(event.event_times[0].start_time)}</td>
-					</tr>
+						<td><span className="table-header">Ends</span></td>
+						<td>{formatDate(event.event_times[0].end_time)}</td>
+					</tr>}
 				</div>
 			</div>
 		);

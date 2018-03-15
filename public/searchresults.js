@@ -63,7 +63,9 @@ export default class App extends React.Component {
 		return (
 			<div>
 				<h1>Results found based on your search</h1>
-				{results.length ? results : error}
+				<div className="recommender-events-list">
+					{results.length ? results : error}
+				</div>
 			</div>
 		)
 	}

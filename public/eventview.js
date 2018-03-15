@@ -25,6 +25,7 @@ class EventData extends React.Component {
 		axios.get('/api/event/'+queries.eventid)
 			.then(response => {
 				this.setState({ event: response.data });
+				document.title = response.data ? response.data.name : "{NO EVENT NAME}";
 			});
 	}
 

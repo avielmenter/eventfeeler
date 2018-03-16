@@ -1,3 +1,5 @@
+//Source for query string parser library: https://github.com/ljharb/qs
+
 (function () {
   'use strict';
 

@@ -57,11 +57,11 @@ class Comments {
         var avg = 0, totalNeutrality = 0;
 
         for (let r of results) {
-            avg += r.sentiment ? r.sentiment * r.neutral : 0;
-            totalNeutrality += r.neutral ? r.neutral : 0;
+            avg += r.sentiment ? r.sentiment * (1.0 - r.neutral) : 0;
+            totalNonNeutrality += r.neutral ? (1.0 - r.neutral) : 0;
         }
 
-        avg /= totalNeutrality;
+        avg /= totalNonNeutrality;
         return avg;
     }
 

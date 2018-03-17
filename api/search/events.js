@@ -228,9 +228,7 @@ class eventsAPI {
 
         let mQuery = {};
 
-        if (this.query.since && this.query.until && until - since <= WEEK_IN_MS) {
-            console.log ("Filtering by event time");
-            
+        if (this.query.since && this.query.until && moment(until).diff(since, 'milliseconds') >= WEEK_IN_MS) {
             mQuery['event_times'] = { $elemMatch : {
                 start_time: {$gte: since},
                 end_time: {$lte: until}

@@ -21,7 +21,7 @@ export default class App extends React.Component {
 		last_week.setDate(last_week.getDate() - 7);
 		var th = this;
 		this.serverRequest =
-			axios.get('/api/search/recommendation?days_out=&limit=')
+			axios.get('/api/search/recommendation?days_out=7&limit=9')
 				.then(function(result) {
 					th.setState({
 						events: result.data
@@ -51,10 +51,6 @@ export default class App extends React.Component {
 		)
 	}
 }
-
-var last_week = new Date();
-last_week.setDate(last_week.getDate() - 7);
-var url = '/api/search/events?since=' + last_week + '&until=' + (new Date());
 
 ReactDOM.render(<NavBar />, document.getElementsByTagName("nav")[0]);
 ReactDOM.render(<App/>, document.querySelector("#root"));

@@ -3,14 +3,17 @@ import ReactDOM from 'react-dom';
 
 import NavBar from './components/navbar.js'
 
+import moment from 'moment';
+
 ReactDOM.render(<NavBar />, document.getElementsByTagName("nav")[0]);
 
 //*
 var xmlhttp = new XMLHttpRequest();
 
-var next_week = new Date();
-next_week.setDate(next_week.getDate() + 7);
-var url = '/api/search/events?since=' + (new Date()) + '&until=' + next_week;
+var next_week = moment(new Date()).add(7, 'days');
+
+var url = '/api/search/events?since=' + encodeURI(new Date());
+url += '&until=' + encodeURI(next_week.toDate());
 
 var locations;
 

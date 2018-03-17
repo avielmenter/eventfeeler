@@ -64,7 +64,7 @@ class Events {
 
         e.name = fbEvent.name;
         e.description = fbEvent.description;
-        e.place = {
+        e.place = (!fbEvent.place) ? {} : {
             name: fbEvent.place.name,
             loc: fbEvent.place.location === undefined ? undefined : {
                 type: 'Point',

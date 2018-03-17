@@ -76,10 +76,15 @@ class eventsAPI {
         console.log("Saving " + vevents.length + " new UCI calendar events to database.");
         var newCalEvents = await calAPI.save(vevents);
         console.log("Events saved.");
-        for (let newCal of newCalEvents) {
-            var same = await this.findSame(newCal);
-            if (same && same.length > 1)
-                await this.merge(same);
+        try {
+            for (let newCal of newCalEvents) {
+                var same = await this.findSame(newCal);
+                if (same && same.length > 1)
+                    await this.merge(same);
+            }
+        } catch (err) {
+            console.log("Error merging events.");
+            throw err;
         }
         console.log("Events merged.");
 
@@ -115,7 +120,7 @@ class eventsAPI {
     async findSame(e) {
         var start_times = e.event_times.map(et => et.start_time).filter(st => st !== undefined && st !== null);
 
-        if (start_times.length <= 0)
+        if (start_times.length <= 0 || !e.place || !e.place.name)
             return [];
 
         var same = await this.api.schemas.Events.model.find({  // if they events share a start time and an event place name, they're the same
@@ -205,13 +210,15 @@ class eventsAPI {
 
         this.api.connect();
 
-        var since = moment(this.query.since, TZ).toDate();
-        var until = moment(this.query.until, TZ).toDate();
+        var since = this.query.since;
+        var until = this.query.until;
 
         if (!this.query.name && !this.query.categories && until - since > WEEK_IN_MS)
             throw new Error("You cannot request more than a week's worth of events at a time.");
         else if (until - since <= WEEK_IN_MS)
-            this.ensureDBRecency(since, until).then(); // update DB asynchronously so we don't wait on the API fetching
+            this.ensureDBRecency(since, until)
+                .then() // update DB asynchronously so we don't wait on the API fetching
+                .catch(err => { console.log("Error syncing database: " + err.stack) });
 
         var eventsModel = this.api.schemas.Events.model;
 
@@ -222,6 +229,8 @@ class eventsAPI {
         var mQuery = {};
 
         if (this.query.since && this.query.until && until - since <= WEEK_IN_MS)
+            console.log ("Filtering by event time");
+            
             mQuery.event_times = { $elemMatch : {
                 start_time: {$gte: since},
                 end_time: {$lte: until}

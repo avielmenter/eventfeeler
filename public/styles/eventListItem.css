@@ -22,7 +22,7 @@
 
 .event-box {
 	box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
-	margin: 2%;
+	margin: 2% 2% 1.5em 2%;
 	width: 25%;
 	border: 1px solid #81CFE0;
 }

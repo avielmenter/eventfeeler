@@ -226,22 +226,28 @@ class eventsAPI {
         if (this.query.categories)
             categories = this.query.categories.split(',').map(c => c.trim().toLowerCase());
 
-        var mQuery = {};
+        let mQuery = {};
 
-        if (this.query.since && this.query.until && until - since <= WEEK_IN_MS)
+        if (this.query.since && this.query.until && until - since <= WEEK_IN_MS) {
             console.log ("Filtering by event time");
             
-            mQuery.event_times = { $elemMatch : {
+            mQuery['event_times'] = { $elemMatch : {
                 start_time: {$gte: since},
                 end_time: {$lte: until}
             }};
+        }
 
-        if (!this.query.classes)
-            mQuery.$or = [{'event_ids.from': 'Facebook'}, {'event_ids.from': 'Calendar'}] // no classes
-        if (this.query.name)
-            mQuery.name = new RegExp('.*' + this.query.name + '.*', 'i')
-        if (categories.length > 0)
-            mQuery.categories = { $all: categories };
+        if (!this.query.classes) {
+            mQuery['$or'] = [{'event_ids.from': 'Facebook'}, {'event_ids.from': 'Calendar'}] // no classes
+        } if (this.query.name && this.query.name.trim().length > 0) {
+            var nameMatch = '.*' + this.query.name + '.*';
+            console.log("Filtering by name: " + nameMatch);
+            mQuery['name'] = new RegExp(nameMatch, 'i');
+        } if (categories.length > 0) {
+            mQuery['categories'] = { $all: categories };
+        }
+
+        console.log("DB Query: " + JSON.stringify(mQuery, null, '\t'));
 
         var dbQuery = eventsModel.find(mQuery);
 

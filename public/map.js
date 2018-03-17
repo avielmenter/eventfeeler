@@ -51,6 +51,11 @@ var posIcon = {
 var infowindow = new google.maps.InfoWindow();
 var marker, i;
 
+function geoOffset() { // offsets pins at the same location very slightly
+	var rand = Math.random();
+	return (rand * 10 - 5.0) / 111700.0;
+}
+
 for (i = 0; i < locations.length; i++) {
 	var id = locations[i]._id;
 	var idUrl = "eventview.html?eventid="+id;
@@ -62,7 +67,7 @@ for (i = 0; i < locations.length; i++) {
 			eventIcon = negIcon;
 
 		marker = new google.maps.Marker({
-			position: new google.maps.LatLng(locations[i].place.loc.coordinates[1], locations[i].place.loc.coordinates[0]),
+			position: new google.maps.LatLng(locations[i].place.loc.coordinates[1] + geoOffset(), locations[i].place.loc.coordinates[0] + geoOffset()),
 			map: map,
 			icon: eventIcon
 		})

@@ -245,8 +245,6 @@ class eventsAPI {
             mQuery['categories'] = { $all: categories };
         }
 
-        console.log("DB Query: " + JSON.stringify(mQuery, null, '\t'));
-
         var dbQuery = eventsModel.find(mQuery);
 
         if (this.query.nearLat && this.query.nearLong && this.query.distance) {

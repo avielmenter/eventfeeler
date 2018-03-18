@@ -11,8 +11,11 @@ class calendarEvents {
         var jcal = new ical.Component(ical.parse(response.data));
         var vevents = jcal.getAllSubcomponents('vevent');
 
-        var start = this.since || new Date('2001-01-01');
-        var end = this.until || new Date('2030-01-01');
+        var start = new Date(this.since) || new Date('2001-01-01');
+        var end = new Date(this.until) || new Date('2030-01-01');
+
+        console.log("Searching Calendar From: " + start);
+        console.log("Searching Calendar To  : " + end);
 
         var filtered = vevents.filter(vevent => {
             let dtstamp = new Date(vevent.getFirstPropertyValue('dtstart'));

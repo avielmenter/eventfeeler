@@ -61,7 +61,6 @@ class eventsAPI {
                 if (same && same.length > 1)
                     await this.merge(same);
             }
-            console.log("Events merged.");
         } catch (err) {
             console.log("Error merging events.");
             throw err;
@@ -86,7 +85,6 @@ class eventsAPI {
             console.log("Error merging events.");
             throw err;
         }
-        console.log("Events merged.");
 
         var ts = {                       // timespan for events we've just saved
             start: new Date(since),
@@ -110,11 +108,13 @@ class eventsAPI {
 
         var savedTS = await etsModel.create(ts);
 
-        await etsModel.find({ // remove timespans encompassed in this one
+        var delTS = await etsModel.find({ // remove timespans encompassed in this one
             start:  {$gte: ts.start},
             end:    {$lte: ts.end},
             _id:    {$ne: savedTS._id}
-        }).remove();
+        });
+
+        await Promise.all(delTS.map(d => d.remove()));
     }
 
     async findSame(e) {
@@ -124,7 +124,7 @@ class eventsAPI {
             return [];
 
         var same = await this.api.schemas.Events.model.find({  // if they events share a start time and an event place name, they're the same
-            event_times: { $elemMatch: { start_time: {$in: start_times } } },
+            'event_times.start_time': { $in: start_times },
             'place.name': { $regex: '\\s*' + escapeStringRegexp(e.place.name.toLowerCase()) + '\\s*', $options: 'i' }
         });
 
@@ -169,6 +169,8 @@ class eventsAPI {
             }
         }
 
+        categories = categories.filter((c, i, a) => i === a.indexOf(c)); // remove duplicate categories
+
         var merged = {
             name: events.filter(e => e && e.name)[0].name,
             description: events.filter(e => e.description)[0].description,
@@ -194,13 +196,9 @@ class eventsAPI {
             { $set: { 'attending.$': mergedDB._id } }
         );
         //delete old events
-        var deletePromises = [];
-        for (let e of events) {
-            deletePromises.push(e.remove());
-        }
+        await Promise.all(events.map(e => this.api.schemas.Events.model.findByIdAndRemove(e._id)));
 
-        await Promise.all(deletePromises);
-
+        console.log("Merged event '" + mergedDB.name + "'");
         return mergedDB;
     }
 
@@ -215,7 +213,7 @@ class eventsAPI {
 
         if (!this.query.name && !this.query.categories && until - since > WEEK_IN_MS)
             throw new Error("You cannot request more than a week's worth of events at a time.");
-        else if (until - since <= WEEK_IN_MS)
+        else if (this.query.since && this.query.until && moment(until).diff(since, 'milliseconds') <= WEEK_IN_MS)
             this.ensureDBRecency(since, until)
                 .then() // update DB asynchronously so we don't wait on the API fetching
                 .catch(err => { console.log("Error syncing database: " + err.stack) });
@@ -228,7 +226,7 @@ class eventsAPI {
 
         let mQuery = {};
 
-        if (this.query.since && this.query.until && moment(until).diff(since, 'milliseconds') >= WEEK_IN_MS) {
+        if (this.query.since && this.query.until && moment(until).diff(since, 'milliseconds') <= WEEK_IN_MS) {
             mQuery['event_times'] = { $elemMatch : {
                 start_time: {$gte: since},
                 end_time: {$lte: until}

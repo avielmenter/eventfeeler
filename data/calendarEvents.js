@@ -4,6 +4,9 @@ var ical = require('ical.js');
 class calendarEvents {
     constructor(setAPI) {
         this.api = setAPI;
+
+        this.since = null;
+        this.until = null;
     }
 
     async get() {
@@ -11,8 +14,8 @@ class calendarEvents {
         var jcal = new ical.Component(ical.parse(response.data));
         var vevents = jcal.getAllSubcomponents('vevent');
 
-        var start = new Date(this.since) || new Date('2001-01-01');
-        var end = new Date(this.until) || new Date('2030-01-01');
+        var start = this.since ? new Date(this.since) : new Date('2001-01-01');
+        var end = this.until ? new Date(this.until) : new Date('2030-01-01');
 
         console.log("Searching Calendar From: " + start);
         console.log("Searching Calendar To  : " + end);

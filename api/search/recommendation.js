@@ -1,6 +1,5 @@
 var moment = require('moment');
 
-
 class recommendationAPI {
     constructor(setAPI, setQuery) {
         this.api = setAPI;
@@ -71,8 +70,8 @@ class recommendationAPI {
         for (let r of catCountResults) {
             pCat[r.key] = r.result;
             pNotCat[r.key] = totalEvents - r.result;
-            if (!r.key in pAttendAndCat) pAttendAndCat[r.key] = 0.0;
-            if (!r.key in pAttendNotCat) pAttendNotCat[r.key] = 0.0;
+            if (!(r.key in pAttendAndCat)) pAttendAndCat[r.key] = 0.0;
+            if (!(r.key in pAttendNotCat)) pAttendNotCat[r.key] = 0.0;
         }
 
         var upcomingEvents = await this.api.schemas.Events.model.find({ // find non-class events in the next week with category the user's attended
